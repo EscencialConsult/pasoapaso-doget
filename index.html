@@ -155,11 +155,61 @@
       <p class="text-sm text-oscuro/75" data-intro="sumar"></p>
     </div>
     <div class="space-y-6" id="pasos-sumar"></div>
+
+    <!-- Así te queda -->
+    <div class="relative mt-10 overflow-hidden rounded-3xl bg-gradient-to-b from-oscuro to-black">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[220px] bg-fucsia/20 rounded-full blur-[100px] pointer-events-none"></div>
+      <div class="relative px-5 py-12 sm:py-14 text-center">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-cian bg-cian/10 border border-cian/30 rounded-full px-4 py-1.5 mb-6">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          Así te queda
+        </span>
+        <h3 class="text-xl sm:text-2xl font-extrabold text-crema">Tu panel de administración, listo para usar</h3>
+        <p class="mt-3 text-lavanda text-sm max-w-lg mx-auto">
+          Login, KPIs, gráficos, comparación mes a mes e informe mensual exportable a PDF —
+          todo leyendo en vivo desde la misma Google Sheet.
+        </p>
+        <div class="mt-8 glass rounded-2xl p-2 max-w-md mx-auto glow-cian">
+          <div class="rounded-xl overflow-hidden screenshot-slot aspect-video relative">
+            <img src="assets/capturas/resultado-panel.png" alt="El panel de administración funcionando" class="img-zoom w-full h-full object-cover object-top cursor-zoom-in" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="hidden absolute inset-0 items-center justify-center text-center p-4">
+              <div class="text-oscuro/50 text-xs px-4">
+                <i data-lucide="image" class="w-6 h-6 mx-auto mb-2"></i>
+                Captura del panel funcionando<br>
+                <span class="text-oscuro/35">assets/capturas/resultado-panel.png</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="comprobantes-panel-admin.html" target="_blank"
+             class="flex items-center gap-2 text-sm font-semibold text-negro bg-gradient-to-r from-cian to-fucsia hover:opacity-90 px-6 py-3 rounded-full transition">
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            Abrir el panel de administración
+          </a>
+          <a href="comprobantes-panel-admin.html" download
+             class="flex items-center gap-2 text-sm font-semibold text-crema glass hover:bg-white/10 px-6 py-3 rounded-full transition">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Descargar el archivo
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-8 border-t-2 border-dashed border-grisclaro/60">
+      <h3 class="text-base font-bold text-oscuro flex items-center gap-2">
+        <i data-lucide="sparkles" class="w-4 h-4 text-cian"></i>
+        Recomendaciones para un manejo correcto de los datos (y ahorro de tokens)
+      </h3>
+      <p class="text-sm text-oscuro/60 mt-1 mb-5">No son pasos que hagas en Apps Script ni en la Sheet: son opciones que le sumás al prompt para que la IA arme el panel mejor y con menos errores. Tildá las que quieras incluir.</p>
+      <div class="space-y-6" id="recos-sumar"></div>
+    </div>
+
     <div class="mt-8 bg-oscuro rounded-2xl overflow-hidden">
       <div class="flex items-center justify-between px-5 py-3 border-b border-white/10">
         <span class="text-xs font-semibold uppercase tracking-wider text-lavanda flex items-center gap-2">
           <i data-lucide="sparkles" class="w-3.5 h-3.5 text-fucsia"></i>
-          <span class="js-contador" data-metodo="sumar">Tu prompt (0/6 pasos marcados)</span>
+          <span class="js-contador" data-metodo="sumar">Tu prompt (0/3 pasos + 0/3 recomendaciones)</span>
         </span>
         <button type="button" class="js-btn-copiar flex items-center gap-1.5 text-xs font-semibold text-oscuro bg-crema hover:bg-white px-3 py-1.5 rounded-full transition" data-metodo="sumar">
           <i data-lucide="copy" class="w-3.5 h-3.5"></i><span>Copiar</span>
@@ -176,11 +226,61 @@
       <p class="text-sm text-oscuro/75" data-intro="completo"></p>
     </div>
     <div class="space-y-6" id="pasos-completo"></div>
+
+    <!-- Así te queda -->
+    <div class="relative mt-10 overflow-hidden rounded-3xl bg-gradient-to-b from-oscuro to-black">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[220px] bg-fucsia/20 rounded-full blur-[100px] pointer-events-none"></div>
+      <div class="relative px-5 py-12 sm:py-14 text-center">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-cian bg-cian/10 border border-cian/30 rounded-full px-4 py-1.5 mb-6">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          Así te queda
+        </span>
+        <h3 class="text-xl sm:text-2xl font-extrabold text-crema">Tu panel de administración, listo para usar</h3>
+        <p class="mt-3 text-lavanda text-sm max-w-lg mx-auto">
+          Login, KPIs, gráficos, comparación mes a mes e informe mensual exportable a PDF —
+          todo leyendo en vivo desde la misma Google Sheet.
+        </p>
+        <div class="mt-8 glass rounded-2xl p-2 max-w-md mx-auto glow-cian">
+          <div class="rounded-xl overflow-hidden screenshot-slot aspect-video relative">
+            <img src="assets/capturas/resultado-panel.png" alt="El panel de administración funcionando" class="img-zoom w-full h-full object-cover object-top cursor-zoom-in" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="hidden absolute inset-0 items-center justify-center text-center p-4">
+              <div class="text-oscuro/50 text-xs px-4">
+                <i data-lucide="image" class="w-6 h-6 mx-auto mb-2"></i>
+                Captura del panel funcionando<br>
+                <span class="text-oscuro/35">assets/capturas/resultado-panel.png</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="comprobantes-panel-admin.html" target="_blank"
+             class="flex items-center gap-2 text-sm font-semibold text-negro bg-gradient-to-r from-cian to-fucsia hover:opacity-90 px-6 py-3 rounded-full transition">
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            Abrir el panel de administración
+          </a>
+          <a href="comprobantes-panel-admin.html" download
+             class="flex items-center gap-2 text-sm font-semibold text-crema glass hover:bg-white/10 px-6 py-3 rounded-full transition">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            Descargar el archivo
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 pt-8 border-t-2 border-dashed border-grisclaro/60">
+      <h3 class="text-base font-bold text-oscuro flex items-center gap-2">
+        <i data-lucide="sparkles" class="w-4 h-4 text-cian"></i>
+        Recomendaciones para un manejo correcto de los datos (y ahorro de tokens)
+      </h3>
+      <p class="text-sm text-oscuro/60 mt-1 mb-5">No son pasos que hagas en Apps Script ni en la Sheet: son opciones que le sumás al prompt para que la IA arme el panel mejor y con menos errores. Tildá las que quieras incluir.</p>
+      <div class="space-y-6" id="recos-completo"></div>
+    </div>
+
     <div class="mt-8 bg-oscuro rounded-2xl overflow-hidden">
       <div class="flex items-center justify-between px-5 py-3 border-b border-white/10">
         <span class="text-xs font-semibold uppercase tracking-wider text-lavanda flex items-center gap-2">
           <i data-lucide="sparkles" class="w-3.5 h-3.5 text-cian"></i>
-          <span class="js-contador" data-metodo="completo">Tu prompt (0/6 pasos marcados)</span>
+          <span class="js-contador" data-metodo="completo">Tu prompt (0/3 pasos + 0/3 recomendaciones)</span>
         </span>
         <button type="button" class="js-btn-copiar flex items-center gap-1.5 text-xs font-semibold text-oscuro bg-crema hover:bg-white px-3 py-1.5 rounded-full transition" data-metodo="completo">
           <i data-lucide="copy" class="w-3.5 h-3.5"></i><span>Copiar</span>
@@ -208,47 +308,6 @@
         Si algo no aparece, casi siempre es porque no publicaste una <em>versión nueva</em> del Web App o el nombre de la
         pestaña no coincide.
       </p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ RESULTADO FINAL ============ -->
-<section id="final" class="relative mt-10 overflow-hidden">
-  <div class="absolute inset-0 bg-gradient-to-b from-oscuro to-black"></div>
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-fucsia/20 rounded-full blur-[120px]"></div>
-
-  <div class="relative max-w-5xl mx-auto px-5 py-16 sm:py-20 text-center">
-    <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-cian bg-cian/10 border border-cian/30 rounded-full px-4 py-1.5 mb-6">
-      <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-      Así te queda
-    </span>
-    <h2 class="text-2xl sm:text-3xl font-extrabold text-crema">Tu panel de administración, listo para usar</h2>
-    <p class="mt-3 text-lavanda text-sm max-w-lg mx-auto">
-      Login, KPIs, gráficos, comparación mes a mes e informe mensual exportable a PDF —
-      todo leyendo en vivo desde la misma Google Sheet.
-    </p>
-
-    <div class="mt-8 glass rounded-2xl p-2 max-w-md mx-auto glow-cian">
-      <div class="rounded-xl overflow-hidden screenshot-slot aspect-video flex items-center justify-center text-center">
-        <div class="text-oscuro/50 text-xs px-4">
-          <i data-lucide="image" class="w-6 h-6 mx-auto mb-2"></i>
-          Captura del panel funcionando<br>
-          <span class="text-oscuro/35">assets/capturas/resultado-panel.png</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-8 flex flex-wrap justify-center gap-3">
-      <a href="comprobantes-panel-admin.html" target="_blank"
-         class="flex items-center gap-2 text-sm font-semibold text-negro bg-gradient-to-r from-cian to-fucsia hover:opacity-90 px-6 py-3 rounded-full transition">
-        <i data-lucide="external-link" class="w-4 h-4"></i>
-        Abrir el panel de administración
-      </a>
-      <a href="comprobantes-panel-admin.html" download
-         class="flex items-center gap-2 text-sm font-semibold text-crema glass hover:bg-white/10 px-6 py-3 rounded-full transition">
-        <i data-lucide="download" class="w-4 h-4"></i>
-        Descargar el archivo
-      </a>
     </div>
   </div>
 </section>
@@ -419,6 +478,7 @@ LOGO: { PEGÁ ACÁ EL LINK DIRECTO A TU LOGO EN .PNG, O ESCRIBÍ "SIN LOGO" }`
 };
 
 const S_LOCALSTORAGE = {
+  recomendacion: true,
   icono: "database",
   titulo: "Rendimiento: guardá los datos en el navegador (localStorage)",
   resumen: "Para que el panel abra al instante aunque haya muchos comprobantes, se cachean los datos en el navegador.",
@@ -442,6 +502,7 @@ La primera vez que se abre el panel, traé los datos con el doGet y guardalos en
 };
 
 const S_LOGIN = {
+  recomendacion: true,
   icono: "lock",
   titulo: "Seguridad: panel con usuario y contraseña",
   resumen: "El panel muestra datos de todo el proyecto, así que antes de verlo hay que pasar un login.",
@@ -457,6 +518,7 @@ Antes de mostrar el panel, pedí usuario y contraseña en una pantalla de login 
 };
 
 const S_PDF = {
+  recomendacion: true,
   icono: "file-text",
   titulo: "Informe mensual y exportación a PDF",
   resumen: "El apartado que más conviene detallar: pedí el PDF con instrucciones bien específicas para que salga prolijo.",
@@ -465,9 +527,6 @@ const S_PDF = {
     "El PDF se genera con jsPDF + jspdf-autotable (por CDN).",
     "Sé específico: renderizar el logo como imagen, no cortar filas, incluir los gráficos, usar los colores de marca.",
     "Cuanto más detalle le des al pedido del PDF, menos correcciones vas a necesitar después."
-  ],
-  capturas: [
-    { titulo: "El PDF mensual generado (ejemplo)", archivo: "assets/capturas/doget-pdf.png" }
   ],
   notaExtra: `<div class="mt-4 bg-dorado/10 border-2 border-dorado rounded-xl p-4 flex gap-3">
     <i data-lucide="lightbulb" class="w-5 h-5 text-dorado shrink-0 mt-0.5"></i>
@@ -525,7 +584,8 @@ const S_DOGET_SOLO = {
     ]
   },
   capturas: [
-    { titulo: "El editor con doPost arriba y doGet pegado abajo", archivo: "assets/capturas/doget-codigo.png" }
+    { titulo: "El editor con doPost arriba y doGet pegado abajo", archivo: "assets/capturas/doget-codigo.png" },
+    { titulo: "Guardá y ejecutá una vez para autorizar el acceso", archivo: "assets/capturas/doget-guardar-ejecutar.jpg" }
   ],
   seccionLabel: "PASO 2 · CÓMO LEE LOS DATOS (doGet)",
   bloque: BLOQUE_DOGET
@@ -545,7 +605,7 @@ const S_REDEPLOY = {
   capturas: [
     { titulo: "Gestionar implementaciones → editar", archivo: "assets/capturas/doget-implementar.png" },
     { titulo: "Elegir \"Nueva versión\" e implementar", archivo: "assets/capturas/doget-nuevaversion.png" },
-    { titulo: "El JSON abierto en el navegador con ?hoja=", archivo: "assets/capturas/doget-json.png" }
+    { titulo: "Implementación actualizada: copiá la URL", archivo: "assets/capturas/doget-copiar-url.png" }
   ],
   seccionLabel: "PASO 3 · HOJA Y LINK DE MI WEB APP",
   bloque: BLOQUE_LINK
@@ -577,7 +637,8 @@ const S_BACKEND = {
     ]
   },
   capturas: [
-    { titulo: "El editor de Apps Script con doPost y doGet pegados", archivo: "assets/capturas/doget-codigo.png" }
+    { titulo: "El editor de Apps Script con doPost y doGet pegados", archivo: "assets/capturas/doget-codigo.png" },
+    { titulo: "Guardá y ejecutá una vez para autorizar el acceso", archivo: "assets/capturas/doget-guardar-ejecutar.jpg" }
   ],
   seccionLabel: "PASO 2 · CÓMO LEE LOS DATOS (doGet)",
   bloque: BLOQUE_DOGET
@@ -597,7 +658,7 @@ const S_PUBLICAR = {
   capturas: [
     { titulo: "Implementar como aplicación web", archivo: "assets/capturas/doget-implementar.png" },
     { titulo: "Nueva versión / nueva implementación", archivo: "assets/capturas/doget-nuevaversion.png" },
-    { titulo: "El JSON abierto en el navegador con ?hoja=", archivo: "assets/capturas/doget-json.png" }
+    { titulo: "Implementación actualizada: copiá la URL", archivo: "assets/capturas/doget-copiar-url.png" }
   ],
   seccionLabel: "PASO 3 · HOJA Y LINK DE MI WEB APP",
   bloque: BLOQUE_LINK
@@ -623,7 +684,14 @@ const METODOS = {
   }
 };
 
-const INTRO_PROMPT = `Quiero que armes un único archivo HTML (sin build, sin instalar nada) para un PANEL DE ADMINISTRACIÓN que LEE los comprobantes ya cargados en mi Google Sheets (vía doGet) y los muestra en un tablero con login, gráficos, comparación mensual e informe mensual exportable a PDF.`;
+const INTRO_PROMPT = `Quiero que armes un único archivo HTML (sin build, sin instalar nada) para un PANEL DE ADMINISTRACIÓN que LEE los comprobantes ya cargados en mi Google Sheets (vía doGet) y los muestra en un tablero.
+
+ESTO VA SIEMPRE PRIMERO, SIN IMPORTAR QUÉ DETALLE VENGA MÁS ABAJO:
+1. Pantalla de login (usuario y contraseña) antes de mostrar cualquier dato.
+2. Ya logueado, CARGÁ los comprobantes con un fetch GET al doGet y armá el panel completo: KPIs arriba, gráficos (Chart.js) y una tabla/listado de los comprobantes.
+3. RECIÉN DESPUÉS de tener ese panel andando con datos reales, sumá el informe mensual y la exportación a PDF como una sección MÁS adentro del mismo panel — no como página aparte, ni como lo único que generás.
+
+Si más abajo te doy instrucciones muy detalladas sobre una sola parte (por ejemplo el PDF), son un AGREGADO sobre este panel completo: no lo reemplazan. El panel completo (login + carga de datos + KPIs + gráficos) va siempre, aunque esa sea la única sección que venga detallada.`;
 
 /* ======================================================================
    ESTADO Y RENDER
@@ -641,13 +709,16 @@ function divisor(texto){
 
 function construirCard(paso, clave, i){
   const destacado = !!paso.destacado;
+  const recomendacion = !!paso.recomendacion;
   const card = document.createElement("div");
   card.id = `card-${clave}-${i}`;
   card.className = destacado
     ? "bg-dorado/10 border-2 border-dorado rounded-2xl p-5 sm:p-7 transition"
+    : recomendacion
+    ? "bg-cian/5 border border-cian/30 rounded-2xl p-5 sm:p-7 transition"
     : "bg-white rounded-2xl border border-grisclaro/60 shadow-sm shadow-oscuro/5 p-5 sm:p-7 transition";
 
-  const colorAcento = destacado ? "dorado" : "fucsia";
+  const colorAcento = destacado ? "dorado" : recomendacion ? "cian" : "fucsia";
   const detalleHtml = paso.detalle.map(d => `<li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 mt-0.5 text-${colorAcento} shrink-0"></i><span>${d}</span></li>`).join("");
 
   const codigoHtml = paso.codigo ? `
@@ -676,28 +747,35 @@ function construirCard(paso, clave, i){
   const capturasHtml = (paso.capturas && paso.capturas.length) ? `
     <div class="mt-4 grid gap-3 ${paso.capturas.length > 1 ? "sm:grid-cols-2" : ""}">
       ${paso.capturas.map(cap => `
-        <div class="screenshot-slot rounded-xl aspect-video flex items-center justify-center text-center p-4">
-          <div class="text-oscuro/50 text-xs">
-            <i data-lucide="image" class="w-6 h-6 mx-auto mb-2"></i>
-            ${cap.titulo}<br>
-            <span class="text-oscuro/35">${cap.archivo}</span>
+        <div class="screenshot-slot rounded-xl aspect-video overflow-hidden relative">
+          <img src="${cap.archivo}" alt="${cap.titulo}" class="img-zoom w-full h-full object-cover object-top cursor-zoom-in" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="hidden absolute inset-0 items-center justify-center text-center p-4">
+            <div class="text-oscuro/50 text-xs">
+              <i data-lucide="image" class="w-6 h-6 mx-auto mb-2"></i>
+              ${cap.titulo}<br>
+              <span class="text-oscuro/35">${cap.archivo}</span>
+            </div>
           </div>
         </div>`).join("")}
     </div>` : "";
 
+  const badgeHtml = recomendacion
+    ? `<span class="text-[11px] font-bold uppercase tracking-wider text-cian flex items-center gap-1"><i data-lucide="sparkles" class="w-3 h-3"></i>Recomendación</span>`
+    : `<span class="text-[11px] font-bold uppercase tracking-wider text-${destacado ? "dorado" : "lavanda"}">Paso ${i+1}${destacado ? " · obligatorio" : ""}</span>`;
+
   card.innerHTML = `
     <div class="flex items-start justify-between gap-3">
       <div class="flex items-center gap-3">
-        <div class="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center ${destacado ? "bg-dorado/20" : "bg-gradient-to-br from-fucsia/15 to-cian/15"}">
+        <div class="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center ${destacado ? "bg-dorado/20" : recomendacion ? "bg-cian/15" : "bg-gradient-to-br from-fucsia/15 to-cian/15"}">
           <i data-lucide="${paso.icono}" class="w-5 h-5 text-${colorAcento}"></i>
         </div>
         <div>
-          <span class="text-[11px] font-bold uppercase tracking-wider text-${destacado ? "dorado" : "lavanda"}">Paso ${i+1}${destacado ? " · obligatorio" : ""}</span>
+          ${badgeHtml}
           <h3 class="text-base sm:text-lg font-bold text-oscuro leading-tight">${paso.titulo}</h3>
         </div>
       </div>
-      <button type="button" class="btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition border-grisclaro text-oscuro/60" data-metodo="${clave}" data-idx="${i}">
-        <i data-lucide="circle" class="w-3.5 h-3.5"></i><span>Marcar hecho</span>
+      <button type="button" class="btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition border-grisclaro text-oscuro/60" data-metodo="${clave}" data-idx="${i}" data-reco="${recomendacion}">
+        <i data-lucide="circle" class="w-3.5 h-3.5"></i><span>${recomendacion ? "Sumar al prompt" : "Marcar hecho"}</span>
       </button>
     </div>
     <p class="mt-3 text-sm text-oscuro/70">${paso.resumen}</p>
@@ -713,8 +791,13 @@ function construirCard(paso, clave, i){
 
 function renderMetodo(clave){
   const cont = document.getElementById("pasos-" + clave);
+  const contRecos = document.getElementById("recos-" + clave);
   cont.innerHTML = "";
-  METODOS[clave].pasos.forEach((paso, i)=> cont.appendChild(construirCard(paso, clave, i)));
+  contRecos.innerHTML = "";
+  METODOS[clave].pasos.forEach((paso, i)=>{
+    const destino = paso.recomendacion ? contRecos : cont;
+    destino.appendChild(construirCard(paso, clave, i));
+  });
   document.querySelector(`[data-intro="${clave}"]`).textContent = METODOS[clave].intro;
 }
 
@@ -727,16 +810,25 @@ function renderPrompt(clave){
   const texto = bloques.join("\n\n");
   estado[clave].prompt = texto;
   document.querySelectorAll(`.js-prompt-texto[data-metodo="${clave}"]`).forEach(el => el.textContent = texto);
-  const hechos = estado[clave].hechos.filter(Boolean).length;
-  document.querySelectorAll(`.js-contador[data-metodo="${clave}"]`).forEach(el => el.textContent = `Tu prompt (${hechos}/${m.pasos.length} pasos marcados)`);
+  document.querySelectorAll(`.js-contador[data-metodo="${clave}"]`).forEach(el => el.textContent = `Tu prompt (${contadorTexto(clave)})`);
   if(clave === metodoActivo) actualizarFlotante();
+}
+
+function contadorTexto(clave){
+  const m = METODOS[clave];
+  const pasos = m.pasos.filter(p => !p.recomendacion);
+  const recos = m.pasos.filter(p => p.recomendacion);
+  const pasosHechos = m.pasos.filter((p,i) => !p.recomendacion && estado[clave].hechos[i]).length;
+  const recosHechas = m.pasos.filter((p,i) => p.recomendacion && estado[clave].hechos[i]).length;
+  return recos.length
+    ? `${pasosHechos}/${pasos.length} pasos + ${recosHechas}/${recos.length} recomendaciones`
+    : `${pasosHechos}/${pasos.length} pasos marcados`;
 }
 
 function actualizarFlotante(){
   const m = METODOS[metodoActivo];
-  const hechos = estado[metodoActivo].hechos.filter(Boolean).length;
   document.getElementById("flotante-prompt").textContent = estado[metodoActivo].prompt || "";
-  document.getElementById("flotante-contador").textContent = `${m.nombre} · ${hechos}/${m.pasos.length} pasos`;
+  document.getElementById("flotante-contador").textContent = `${m.nombre} · ${contadorTexto(metodoActivo)}`;
 }
 
 function estiloTab(btn, activo){
@@ -754,12 +846,13 @@ function activarMetodo(clave){
 }
 
 function actualizarBotonPaso(btn, hecho){
+  const reco = btn.dataset.reco === "true";
   btn.className = hecho
-    ? "btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition bg-fucsia border-fucsia text-white"
+    ? `btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition ${reco ? "bg-cian border-cian text-oscuro" : "bg-fucsia border-fucsia text-white"}`
     : "btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition border-grisclaro text-oscuro/60";
   btn.innerHTML = hecho
-    ? `<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i><span>Hecho</span>`
-    : `<i data-lucide="circle" class="w-3.5 h-3.5"></i><span>Marcar hecho</span>`;
+    ? `<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i><span>${reco ? "Sumada" : "Hecho"}</span>`
+    : `<i data-lucide="circle" class="w-3.5 h-3.5"></i><span>${reco ? "Sumar al prompt" : "Marcar hecho"}</span>`;
 }
 
 /* ---------- Construir pestañas ---------- */

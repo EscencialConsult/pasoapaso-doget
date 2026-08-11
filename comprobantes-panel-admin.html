@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Panel de Administración · Escencial Consultora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Librerías (por CDN, no hay que instalar nada) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+<style>
+  /* ============================================================
+     CONFIGURACIÓN VISUAL — KIT DE MARCA ONE / ESCENCIAL
+     (idéntico al de la Carga de Comprobantes)
+     ============================================================ */
+  :root{
+    --color-negro:#000000;
+    --color-oscuro:#1a181d;
+    --color-blanco:#fefeff;
+    --color-fucsia:#e17bd7;
+    --color-cian:#6be1e3;
+    --color-dorado:#e4c76a;
+    --color-gris-lavanda:#a4a8c0;
+    --color-gris-claro:#c6c9d7;
+
+    --crema:#fbf8f3;
+    --font-titulo:'Exo 2', sans-serif;
+    --font-subtitulo:'Futura','Century Gothic',Verdana,sans-serif;
+    --font-mono:'Space Mono', monospace;
+
+    --radio:14px;
+    --sombra:0 10px 30px -12px rgba(26,24,29,.25);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 8% -10%, rgba(225,123,215,.10), transparent 45%),
+      radial-gradient(circle at 100% 0%, rgba(107,225,227,.12), transparent 40%),
+      var(--crema);
+    color:var(--color-negro);
+    font-family:var(--font-subtitulo);
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  a{color:inherit;}
+
+  /* -------------------- LOGIN -------------------- */
+  #login-overlay{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(225,123,215,.22), transparent 45%),
+      radial-gradient(circle at 90% 100%, rgba(107,225,227,.20), transparent 42%),
+      var(--color-oscuro);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+  }
+  #login-overlay.hidden{ display:none; }
+  .login-card{
+    width:100%;
+    max-width:380px;
+    background:var(--color-blanco);
+    border-radius:18px;
+    box-shadow:0 24px 60px -20px rgba(0,0,0,.55);
+    padding:30px 26px 26px;
+    text-align:center;
+  }
+  .login-card img{ height:44px; margin-bottom:14px; }
+  .login-card h1{
+    font-family:var(--font-titulo);
+    font-weight:800;
+    font-size:1.2rem;
+    margin:0 0 4px;
+  }
+  .login-card p.sub{
+    font-size:.78rem;
+    color:#6a6a70;
+    margin:0 0 22px;
+  }
+  .login-card .campo{ text-align:left; margin-bottom:14px; }
+  .login-card label{
+    display:block;
+    font-family:var(--font-titulo);
+    font-weight:600;
+    font-size:.72rem;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:var(--color-oscuro);
+    margin-bottom:5px;
+  }
+  .login-card input{
+    width:100%;
+    font-family:var(--font-subtitulo);
+    font-size:1rem;
+    padding:11px 12px;
+    border:1.5px solid var(--color-gris-claro);
+    border-radius:10px;
+    background:var(--color-blanco);
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .login-card input:focus{
+    outline:none;
+    border-color:var(--color-fucsia);
+    box-shadow:0 0 0 3px rgba(225,123,215,.18);
+  }
+  .login-card button{
+    width:100%;
+    margin-top:6px;
+    background:var(--color-negro);
+    color:var(--color-blanco);
+    border:none;
+    border-radius:10px;
+    padding:13px 18px;
+    font-family:var(--font-titulo);
+    font-weight:700;
+    font-size:.95rem;
+    letter-spacing:.03em;
+    cursor:pointer;
+    transition:background .15s, transform .12s;
+  }
+  .login-card button:hover{ background:var(--color-oscuro); }
+  .login-card button:active{ transform:scale(.98); }
+  #login-error{
+    display:none;
+    margin-top:12px;
+    font-size:.78rem;
+    color:#d1435a;
+    font-weight:700;
+  }
+  #login-error.show{ display:block; }
+  .login-nota{
+    margin-top:18px;
+    font-size:.68rem;
+    color:var(--color-gris-lavanda);
+    line-height:1.5;
+  }
+
+  /* -------------------- HEADER -------------------- */
+  header.top{
+    background:var(--color-oscuro);
+    color:var(--color-blanco);
+    padding:16px 20px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    border-bottom:3px solid var(--color-fucsia);
+    flex-wrap:wrap;
+  }
+  header.top img{ height:36px; filter:drop-shadow(0 0 6px rgba(225,123,215,.35)); }
+  header.top .tit{
+    font-family:var(--font-titulo);
+    font-weight:800;
+    font-size:1.1rem;
+    line-height:1.15;
+  }
+  header.top .sub{
+    font-size:.7rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--color-gris-lavanda);
+    margin-top:2px;
+  }
+  header.top .spacer{ flex:1; }
+  header.top button.logout{
+    background:transparent;
+    color:var(--color-gris-lavanda);
+    border:1.5px solid rgba(255,255,255,.18);
+    border-radius:999px;
+    padding:7px 14px;
+    font-family:var(--font-titulo);
+    font-weight:600;
+    font-size:.72rem;
+    letter-spacing:.03em;
+    cursor:pointer;
+    transition:border-color .15s, color .15s;
+  }
+  header.top button.logout:hover{ color:var(--color-blanco); border-color:var(--color-fucsia); }
+
+  /* -------------------- LAYOUT -------------------- */
+  main{ max-width:1040px; margin:0 auto; padding:22px 16px 70px; }
+
+  .barra-estado{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+  }
+  .barra-estado .estado-txt{
+    font-size:.76rem;
+    color:#6a6a70;
+    font-family:var(--font-mono);
+  }
+  .barra-estado .estado-txt b{ color:var(--color-oscuro); }
+  button.accion{
+    background:var(--color-negro);
+    color:var(--color-blanco);
+    border:none;
+    border-radius:999px;
+    padding:9px 16px;
+    font-family:var(--font-titulo);
+    font-weight:700;
+    font-size:.78rem;
+    letter-spacing:.03em;
+    cursor:pointer;
+    transition:background .15s, transform .12s, opacity .15s;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+  }
+  button.accion:hover{ background:var(--color-oscuro); }
+  button.accion:active{ transform:scale(.98); }
+  button.accion:disabled{ opacity:.5; cursor:not-allowed; }
+  button.accion.sec{
+    background:var(--color-blanco);
+    color:var(--color-negro);
+    border:1.5px solid var(--color-gris-claro);
+  }
+  button.accion.sec:hover{ background:#fff; border-color:var(--color-fucsia); }
+
+  h2.section-title{
+    font-family:var(--font-titulo);
+    font-weight:700;
+    font-size:1.02rem;
+    color:var(--color-negro);
+    margin:34px 0 4px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+  }
+  h2.section-title .pill{
+    font-size:.6rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--color-oscuro);
+    background:var(--color-cian);
+    border-radius:999px;
+    padding:3px 9px;
+    font-weight:700;
+  }
+  p.section-note{ font-size:.8rem; color:#6a6a70; margin:0 0 16px; }
+
+  /* -------------------- KPIs -------------------- */
+  .kpis{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+  @media (min-width:720px){ .kpis{ grid-template-columns:repeat(4,1fr); } }
+  .kpi{
+    background:var(--color-blanco);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:16px 16px 18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .kpi::after{
+    content:"";
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:4px;
+    background:linear-gradient(90deg,var(--color-fucsia),var(--color-cian));
+  }
+  .kpi .k-label{
+    font-size:.66rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--color-gris-lavanda);
+    font-family:var(--font-titulo);
+    font-weight:700;
+  }
+  .kpi .k-valor{
+    font-family:var(--font-mono);
+    font-weight:700;
+    font-size:1.35rem;
+    margin-top:7px;
+    color:var(--color-negro);
+    line-height:1.1;
+    word-break:break-word;
+  }
+  .kpi .k-extra{ font-size:.72rem; margin-top:5px; color:#6a6a70; }
+  .k-extra .up{ color:#159e5b; font-weight:700; }
+  .k-extra .down{ color:#d1435a; font-weight:700; }
+
+  /* -------------------- GRÁFICOS -------------------- */
+  .grid-charts{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+  @media (min-width:720px){ .grid-charts{ grid-template-columns:1fr 1fr; } }
+  .card-chart{
+    background:var(--color-blanco);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:18px 18px 14px;
+  }
+  .card-chart h3{
+    font-family:var(--font-titulo);
+    font-weight:700;
+    font-size:.86rem;
+    margin:0 0 12px;
+    color:var(--color-oscuro);
+  }
+  .chart-box{ position:relative; height:260px; }
+  .chart-box.ancho{ height:300px; }
+
+  /* -------------------- INFORME MENSUAL -------------------- */
+  .filtros-mes{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .filtros-mes select{
+    font-family:var(--font-subtitulo);
+    font-size:.95rem;
+    padding:9px 12px;
+    border:1.5px solid var(--color-gris-claro);
+    border-radius:10px;
+    background:var(--color-blanco);
+    min-width:180px;
+  }
+  .filtros-mes select:focus{
+    outline:none;
+    border-color:var(--color-fucsia);
+    box-shadow:0 0 0 3px rgba(225,123,215,.18);
+  }
+
+  .tabla-wrap{
+    background:var(--color-blanco);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    overflow:hidden;
+  }
+  .tabla-scroll{ overflow-x:auto; }
+  table.datos{
+    width:100%;
+    border-collapse:collapse;
+    min-width:820px;
+    font-size:.82rem;
+  }
+  table.datos thead th{
+    text-align:left;
+    font-family:var(--font-titulo);
+    font-weight:700;
+    font-size:.66rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--color-blanco);
+    background:var(--color-oscuro);
+    padding:11px 12px;
+    white-space:nowrap;
+    position:sticky;
+    top:0;
+  }
+  table.datos tbody td{
+    padding:9px 12px;
+    border-bottom:1px solid #f0eee9;
+    white-space:nowrap;
+  }
+  table.datos tbody tr:last-child td{ border-bottom:none; }
+  table.datos tbody tr:hover{ background:#fbf3fa; }
+  td.monto, th.monto{ text-align:right; font-family:var(--font-mono); }
+
+  .total-ticker{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    background:var(--color-negro);
+    color:var(--color-cian);
+    padding:15px 18px;
+    font-family:var(--font-mono);
+  }
+  .total-ticker .label{
+    font-size:.66rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--color-gris-lavanda);
+  }
+  .total-ticker .valor{
+    font-size:1.3rem; font-weight:700;
+    text-shadow:0 0 12px rgba(107,225,227,.45);
+  }
+  .total-ticker .cant{ font-size:.66rem; color:var(--color-dorado); letter-spacing:.06em; }
+
+  .vacio{ padding:34px 16px; text-align:center; color:var(--color-gris-lavanda); font-size:.85rem; }
+
+  /* -------------------- ESTADOS -------------------- */
+  #cargando, #error-carga{
+    text-align:center;
+    padding:50px 20px;
+    color:#6a6a70;
+    font-size:.9rem;
+  }
+  #error-carga{ display:none; color:#d1435a; }
+  .spinner{
+    width:34px; height:34px;
+    border:3px solid var(--color-gris-claro);
+    border-top-color:var(--color-fucsia);
+    border-radius:50%;
+    margin:0 auto 14px;
+    animation:spin .8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  #panel-contenido{ display:none; }
+  #panel-contenido.listo{ display:block; }
+
+  footer.pie{
+    text-align:center;
+    font-size:.7rem;
+    color:var(--color-gris-lavanda);
+    margin-top:34px;
+    letter-spacing:.05em;
+  }
+
+  #toast{
+    position:fixed;
+    left:16px; right:16px; bottom:20px;
+    max-width:520px; margin:0 auto;
+    padding:14px 18px;
+    border-radius:12px;
+    font-family:var(--font-titulo);
+    font-weight:700;
+    font-size:.88rem;
+    text-align:center;
+    color:var(--color-negro);
+    box-shadow:0 10px 26px -8px rgba(0,0,0,.35);
+    transform:translateY(120%);
+    opacity:0;
+    transition:transform .25s, opacity .25s;
+    z-index:80;
+  }
+  #toast.show{ transform:translateY(0); opacity:1; }
+  #toast.ok{ background:var(--color-cian); }
+  #toast.fail{ background:#f0a6a6; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOGIN — puerta de acceso (usuario / contraseña)
+     ============================================================ -->
+<div id="login-overlay">
+  <form class="login-card" id="login-form" autocomplete="off">
+    <img src="https://i.imgur.com/xZMOThF.png" alt="Escencial Consultora">
+    <h1>Panel de Administración</h1>
+    <p class="sub">Acceso restringido · Innovación y Desarrollo</p>
+
+    <div class="campo">
+      <label for="login-user">Usuario</label>
+      <input type="text" id="login-user" name="usuario" autocomplete="username" placeholder="usuario">
+    </div>
+    <div class="campo">
+      <label for="login-pass">Contraseña</label>
+      <input type="password" id="login-pass" name="clave" autocomplete="current-password" placeholder="••••••••">
+    </div>
+    <button type="submit">Ingresar →</button>
+    <div id="login-error">Usuario o contraseña incorrectos.</div>
+    <p class="login-nota">
+      Esta es una puerta simple para evitar accesos casuales al panel. Para datos
+      realmente sensibles, usá siempre un backend con autenticación real.
+    </p>
+  </form>
+</div>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="top">
+  <img src="https://i.imgur.com/xZMOThF.png" alt="Escencial Consultora">
+  <div>
+    <div class="tit">Panel de Administración</div>
+    <div class="sub">Comprobantes · Escencial Consultora</div>
+  </div>
+  <div class="spacer"></div>
+  <button class="logout" id="btn-logout" type="button">Cerrar sesión</button>
+</header>
+
+<main>
+
+  <!-- Estados de carga -->
+  <div id="cargando">
+    <div class="spinner"></div>
+    Trayendo los comprobantes desde Google Sheets…
+  </div>
+  <div id="error-carga">
+    No se pudieron traer los datos. Revisá el link del Web App y tu conexión, y probá
+    <b>Actualizar datos</b>.
+  </div>
+
+  <!-- Contenido del panel (se muestra al terminar de cargar) -->
+  <div id="panel-contenido">
+
+    <div class="barra-estado">
+      <div class="estado-txt" id="estado-datos">—</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="accion sec" id="btn-refrescar" type="button">↻ Actualizar datos</button>
+      </div>
+    </div>
+
+    <!-- ---------------- KPIs ---------------- -->
+    <div class="kpis" id="kpis"></div>
+
+    <!-- ---------------- GRÁFICOS / ANALÍTICA ---------------- -->
+    <h2 class="section-title">Analítica del proyecto <span class="pill">en gráficos</span></h2>
+    <p class="section-note">Vista general de todo lo cargado. Los datos se guardan en tu navegador para que el panel abra al instante.</p>
+
+    <div class="grid-charts">
+      <div class="card-chart" style="grid-column:1 / -1;">
+        <h3>Evolución del gasto por mes</h3>
+        <div class="chart-box ancho"><canvas id="chart-mes"></canvas></div>
+      </div>
+      <div class="card-chart">
+        <h3>Gasto por sector</h3>
+        <div class="chart-box"><canvas id="chart-sector"></canvas></div>
+      </div>
+      <div class="card-chart">
+        <h3>Gasto por método de pago</h3>
+        <div class="chart-box"><canvas id="chart-metodo"></canvas></div>
+      </div>
+      <div class="card-chart" style="grid-column:1 / -1;">
+        <h3>Gasto por tipo de comprobante</h3>
+        <div class="chart-box"><canvas id="chart-tipo"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ---------------- INFORME MENSUAL ---------------- -->
+    <h2 class="section-title">Informe mensual <span class="pill">exportable</span></h2>
+    <p class="section-note">Elegí un mes para ver todos sus comprobantes, comparar contra el mes anterior y exportarlo a PDF.</p>
+
+    <div class="filtros-mes">
+      <label for="sel-mes" style="font-family:var(--font-titulo); font-weight:700; font-size:.78rem; text-transform:uppercase; letter-spacing:.03em;">Mes:</label>
+      <select id="sel-mes"></select>
+      <button class="accion" id="btn-pdf" type="button">⬇ Exportar PDF del mes</button>
+    </div>
+
+    <!-- comparación del mes seleccionado -->
+    <div class="kpis" id="kpis-mes" style="margin-bottom:16px;"></div>
+
+    <div class="tabla-wrap">
+      <div class="tabla-scroll">
+        <table class="datos">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Sector</th>
+              <th>Proveedor</th>
+              <th>Tipo</th>
+              <th>N° Comp.</th>
+              <th>Concepto</th>
+              <th class="monto">Monto</th>
+              <th>Método</th>
+              <th>Observaciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-mes"></tbody>
+        </table>
+      </div>
+      <div id="vacio-mes" class="vacio">No hay comprobantes en este mes.</div>
+      <div class="total-ticker">
+        <div>
+          <div class="label">Total del mes</div>
+          <div class="cant" id="ticker-cant-mes">0 comprobantes</div>
+        </div>
+        <div class="valor" id="ticker-total-mes">$ 0,00</div>
+      </div>
+    </div>
+
+    <footer class="pie">ONE · Escencial Consultora — Área de Innovación y Desarrollo</footer>
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   1) CONFIGURACIÓN — EDITAR ACÁ
+   ============================================================ */
+const CONFIG = {
+  /* Puerta de acceso del panel (login simple del lado del navegador). */
+  usuario: "admin",
+  clave:   "escencial2026",
+
+  /* Nombre EXACTO de la pestaña de Google Sheets. */
+  nombreHoja: "Hoja 1",
+
+  /* URL del Web App de Apps Script — la NUEVA, con doPost + doGet publicados.
+     Tiene que terminar en /exec. */
+  appsScriptUrl: "https://script.google.com/macros/s/AKfycbzUhxMiOxhsup9kidsH5MeSKHhabZSsY8X6HkiTw-RMkW93uzU7sfYxQB-AqeasKg-gpg/exec",
+
+  /* Cada cuánto se considera "fresca" la caché del navegador (en minutos).
+     Dentro de ese tiempo el panel abre desde la caché sin volver a pedir a Google. */
+  cacheMinutos: 180
+};
+
+/* Nombres EXACTOS de las columnas tal como las devuelve el doGet
+   (son los encabezados de la fila 1 de tu Google Sheets). */
+const COL = {
+  fecha:     "Fecha",
+  sector:    "Sector",
+  proveedor: "Proveedor",
+  tipo:      "Tipo de comprobante",
+  numero:    "N° Comprobante",
+  concepto:  "Concepto",
+  monto:     "Monto",
+  metodo:    "Método de pago",
+  obs:       "Observaciones"
+};
+
+/* Paleta de marca para los gráficos */
+const PALETA = ["#e17bd7","#6be1e3","#e4c76a","#a4a8c0","#b98bd9","#7ec7a0","#e8a06b","#8fb3e0","#d98ba0","#9be0d0"];
+
+const LS_DATOS = "panel_comprobantes_datos";
+const LS_TS    = "panel_comprobantes_ts";
+const SS_AUTH  = "panel_auth_ok";
+
+const MESES_CORTO = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const MESES_LARGO = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+/* Estado en memoria */
+let registros = [];          // datos normalizados
+const charts = {};           // instancias de Chart.js
+
+/* ============================================================
+   2) LOGIN
+   ============================================================ */
+const loginOverlay = document.getElementById("login-overlay");
+const loginForm = document.getElementById("login-form");
+const loginError = document.getElementById("login-error");
+
+function estaAutenticado(){ return sessionStorage.getItem(SS_AUTH) === "1"; }
+
+function abrirPanel(){
+  loginOverlay.classList.add("hidden");
+  iniciarPanel();
+}
+
+loginForm.addEventListener("submit", (ev)=>{
+  ev.preventDefault();
+  const u = document.getElementById("login-user").value.trim();
+  const c = document.getElementById("login-pass").value;
+  if (u === CONFIG.usuario && c === CONFIG.clave){
+    sessionStorage.setItem(SS_AUTH, "1");
+    loginError.classList.remove("show");
+    abrirPanel();
+  } else {
+    loginError.classList.add("show");
+    document.getElementById("login-pass").value = "";
+    document.getElementById("login-pass").focus();
+  }
+});
+
+document.getElementById("btn-logout").addEventListener("click", ()=>{
+  sessionStorage.removeItem(SS_AUTH);
+  location.reload();
+});
+
+/* ============================================================
+   3) HELPERS DE FORMATO Y PARSEO
+   ============================================================ */
+function formatoMoneda(num){
+  return "$ " + (num || 0).toLocaleString("es-AR", {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function formatoMonedaCorto(num){
+  const n = num || 0;
+  if (Math.abs(n) >= 1e6) return "$ " + (n/1e6).toLocaleString("es-AR",{maximumFractionDigits:1}) + "M";
+  if (Math.abs(n) >= 1e3) return "$ " + (n/1e3).toLocaleString("es-AR",{maximumFractionDigits:1}) + "k";
+  return "$ " + n.toLocaleString("es-AR",{maximumFractionDigits:0});
+}
+
+/* Convierte cualquier formato de monto (número o texto) a número real */
+function parseMonto(v){
+  if (typeof v === "number") return isFinite(v) ? v : 0;
+  if (v == null || v === "") return 0;
+  let s = String(v).trim().replace(/[$\s]/g,"");
+  if (s.includes(",") && s.includes(".")){
+    if (s.lastIndexOf(",") > s.lastIndexOf(".")) s = s.replace(/\./g,"").replace(",",".");
+    else s = s.replace(/,/g,"");
+  } else if (s.includes(",")){
+    s = s.replace(/\./g,"").replace(",",".");
+  }
+  const n = parseFloat(s.replace(/[^0-9.\-]/g,""));
+  return isNaN(n) ? 0 : n;
+}
+
+/* Convierte la fecha (Date, ISO o dd/mm/yyyy) a un objeto Date */
+function parseFecha(v){
+  if (v == null || v === "") return null;
+  if (v instanceof Date) return v;
+  const s = String(v).trim();
+  let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+  if (m){
+    let anio = +m[3]; if (anio < 100) anio += 2000;
+    return new Date(anio, +m[2]-1, +m[1]);
+  }
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
+}
+function claveMes(d){ return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0"); }
+function labelMesCorto(clave){ const [y,m] = clave.split("-"); return MESES_CORTO[+m-1] + " " + y; }
+function labelMesLargo(clave){ const [y,m] = clave.split("-"); return MESES_LARGO[+m-1] + " " + y; }
+function fechaDDMMYYYY(d){
+  if (!d) return "—";
+  return String(d.getDate()).padStart(2,"0") + "/" + String(d.getMonth()+1).padStart(2,"0") + "/" + d.getFullYear();
+}
+
+/* ============================================================
+   4) CARGA DE DATOS — doGet + caché en localStorage
+   ============================================================ */
+async function traerDesdeGoogle(){
+  const url = CONFIG.appsScriptUrl + "?hoja=" + encodeURIComponent(CONFIG.nombreHoja);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  const data = await res.json();
+  if (!Array.isArray(data)) throw new Error("La respuesta no es una lista.");
+  return data;
+}
+
+/* Normaliza cada registro crudo a un objeto uniforme */
+function normalizar(crudos){
+  return crudos
+    .map(r=>{
+      const fecha = parseFecha(r[COL.fecha]);
+      return {
+        fecha,
+        mes: fecha ? claveMes(fecha) : null,
+        fechaTxt: fecha ? fechaDDMMYYYY(fecha) : (r[COL.fecha] || "—"),
+        sector: r[COL.sector] || "—",
+        proveedor: r[COL.proveedor] || "—",
+        tipo: r[COL.tipo] || "—",
+        numero: r[COL.numero] || "—",
+        concepto: r[COL.concepto] || "",
+        monto: parseMonto(r[COL.monto]),
+        metodo: r[COL.metodo] || "—",
+        obs: r[COL.obs] || ""
+      };
+    })
+    /* filtra filas totalmente vacías */
+    .filter(r => r.proveedor !== "—" || r.monto !== 0 || r.fecha);
+}
+
+function guardarCache(crudos){
+  try{
+    localStorage.setItem(LS_DATOS, JSON.stringify(crudos));
+    localStorage.setItem(LS_TS, String(Date.now()));
+  }catch(e){ /* si el navegador bloquea localStorage, seguimos sin caché */ }
+}
+function leerCache(){
+  try{
+    const raw = localStorage.getItem(LS_DATOS);
+    const ts = Number(localStorage.getItem(LS_TS) || 0);
+    if (!raw) return null;
+    return { crudos: JSON.parse(raw), ts };
+  }catch(e){ return null; }
+}
+function cacheFresca(ts){
+  return ts && (Date.now() - ts) < CONFIG.cacheMinutos * 60 * 1000;
+}
+
+/* Carga principal. forzar=true ignora la caché y pide de nuevo a Google. */
+async function cargarDatos(forzar){
+  const cargando = document.getElementById("cargando");
+  const errorBox = document.getElementById("error-carga");
+  const panel = document.getElementById("panel-contenido");
+
+  const cache = leerCache();
+
+  /* Si hay caché fresca y no se fuerza, abrimos al instante desde el navegador. */
+  if (!forzar && cache && cacheFresca(cache.ts)){
+    registros = normalizar(cache.crudos);
+    pintarTodo(cache.ts, true);
+    return;
+  }
+
+  /* Si hay caché (aunque sea vieja), la mostramos ya para no dejar la pantalla en blanco. */
+  if (!forzar && cache){
+    registros = normalizar(cache.crudos);
+    pintarTodo(cache.ts, true);
+  } else {
+    cargando.style.display = "block";
+    errorBox.style.display = "none";
+    panel.classList.remove("listo");
+  }
+
+  try{
+    const crudos = await traerDesdeGoogle();
+    guardarCache(crudos);
+    registros = normalizar(crudos);
+    pintarTodo(Date.now(), false);
+    if (forzar) mostrarToast("Datos actualizados ✔", "ok");
+  }catch(err){
+    console.error(err);
+    if (registros.length){
+      /* ya había datos de caché en pantalla: solo avisamos */
+      mostrarToast("No se pudo actualizar. Se muestran los últimos datos guardados.", "fail");
+    } else {
+      cargando.style.display = "none";
+      errorBox.style.display = "block";
+    }
+  }
+}
+
+/* ============================================================
+   5) PINTAR TODO EL PANEL
+   ============================================================ */
+function pintarTodo(ts, desdeCache){
+  document.getElementById("cargando").style.display = "none";
+  document.getElementById("error-carga").style.display = "none";
+  document.getElementById("panel-contenido").classList.add("listo");
+
+  const fechaTs = new Date(ts);
+  const cuando = fechaDDMMYYYY(fechaTs) + " " + String(fechaTs.getHours()).padStart(2,"0") + ":" + String(fechaTs.getMinutes()).padStart(2,"0");
+  document.getElementById("estado-datos").innerHTML =
+    (desdeCache ? "Desde caché del navegador · " : "Recién actualizado · ") +
+    "<b>" + registros.length + "</b> comprobantes · " + cuando;
+
+  pintarKPIs();
+  pintarGraficos();
+  poblarSelectorMeses();
+  pintarInformeMes();
+}
+
+/* ---------- Agregaciones ---------- */
+function sumaPor(campo){
+  const map = {};
+  registros.forEach(r=>{ const k = r[campo] || "—"; map[k] = (map[k]||0) + r.monto; });
+  return map;
+}
+function totalesPorMes(){
+  const map = {};
+  registros.forEach(r=>{ if(r.mes){ map[r.mes] = (map[r.mes]||0) + r.monto; } });
+  return map;
+}
+function mesesOrdenados(){ return Object.keys(totalesPorMes()).sort(); }
+
+/* ---------- KPIs generales ---------- */
+function pintarKPIs(){
+  const total = registros.reduce((a,r)=>a+r.monto, 0);
+  const cant = registros.length;
+  const promedio = cant ? total/cant : 0;
+
+  const porMes = totalesPorMes();
+  const meses = mesesOrdenados();
+  const mesTop = meses.reduce((best,k)=> porMes[k] > (porMes[best]||-1) ? k : best, meses[0]);
+
+  const kpis = [
+    { label:"Total acumulado", valor: formatoMoneda(total), extra: cant + " comprobantes" },
+    { label:"Ticket promedio", valor: formatoMoneda(promedio), extra:"por comprobante" },
+    { label:"Meses con datos", valor: String(meses.length), extra: meses.length ? (labelMesCorto(meses[0]) + " → " + labelMesCorto(meses[meses.length-1])) : "—" },
+    { label:"Mes de mayor gasto", valor: mesTop ? labelMesCorto(mesTop) : "—", extra: mesTop ? formatoMoneda(porMes[mesTop]) : "" }
+  ];
+
+  document.getElementById("kpis").innerHTML = kpis.map(k=>`
+    <div class="kpi">
+      <div class="k-label">${k.label}</div>
+      <div class="k-valor">${k.valor}</div>
+      <div class="k-extra">${k.extra}</div>
+    </div>`).join("");
+}
+
+/* ---------- Gráficos ---------- */
+function baseOpts(extra){
+  return Object.assign({
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{ labels:{ font:{ family:"'Exo 2', sans-serif" }, color:"#1a181d" } }
+    }
+  }, extra || {});
+}
+
+function pintarGraficos(){
+  Object.values(charts).forEach(c=> c && c.destroy());
+
+  /* Evolución por mes (barras) */
+  const porMes = totalesPorMes();
+  const meses = mesesOrdenados();
+  charts.mes = new Chart(document.getElementById("chart-mes"), {
+    type:"bar",
+    data:{
+      labels: meses.map(labelMesCorto),
+      datasets:[{
+        label:"Gasto",
+        data: meses.map(m=>porMes[m]),
+        backgroundColor:"#e17bd7",
+        borderRadius:6,
+        maxBarThickness:46
+      }]
+    },
+    options: baseOpts({
+      plugins:{ legend:{ display:false } },
+      scales:{ y:{ ticks:{ callback:v=>formatoMonedaCorto(v) } } }
+    })
+  });
+
+  /* Por sector (dona) */
+  const porSector = sumaPor("sector");
+  const secLabels = Object.keys(porSector);
+  charts.sector = new Chart(document.getElementById("chart-sector"), {
+    type:"doughnut",
+    data:{
+      labels: secLabels,
+      datasets:[{ data: secLabels.map(k=>porSector[k]), backgroundColor: PALETA, borderColor:"#fff", borderWidth:2 }]
+    },
+    options: baseOpts({ plugins:{ legend:{ position:"right", labels:{ font:{ family:"'Exo 2', sans-serif", size:11 }, color:"#1a181d", boxWidth:12 } } } })
+  });
+
+  /* Por método (dona) */
+  const porMetodo = sumaPor("metodo");
+  const metLabels = Object.keys(porMetodo);
+  charts.metodo = new Chart(document.getElementById("chart-metodo"), {
+    type:"doughnut",
+    data:{
+      labels: metLabels,
+      datasets:[{ data: metLabels.map(k=>porMetodo[k]), backgroundColor: PALETA, borderColor:"#fff", borderWidth:2 }]
+    },
+    options: baseOpts({ plugins:{ legend:{ position:"right", labels:{ font:{ family:"'Exo 2', sans-serif", size:11 }, color:"#1a181d", boxWidth:12 } } } })
+  });
+
+  /* Por tipo de comprobante (barras horizontales) */
+  const porTipo = sumaPor("tipo");
+  const tipoLabels = Object.keys(porTipo);
+  charts.tipo = new Chart(document.getElementById("chart-tipo"), {
+    type:"bar",
+    data:{
+      labels: tipoLabels,
+      datasets:[{ label:"Gasto", data: tipoLabels.map(k=>porTipo[k]), backgroundColor:"#6be1e3", borderRadius:6 }]
+    },
+    options: baseOpts({
+      indexAxis:"y",
+      plugins:{ legend:{ display:false } },
+      scales:{ x:{ ticks:{ callback:v=>formatoMonedaCorto(v) } } }
+    })
+  });
+}
+
+/* ---------- Informe mensual ---------- */
+function poblarSelectorMeses(){
+  const sel = document.getElementById("sel-mes");
+  const meses = mesesOrdenados().reverse(); // más reciente primero
+  sel.innerHTML = meses.map(m=>`<option value="${m}">${labelMesLargo(m)}</option>`).join("");
+}
+
+function registrosDelMes(clave){
+  return registros
+    .filter(r=>r.mes === clave)
+    .sort((a,b)=> (a.fecha?a.fecha.getTime():0) - (b.fecha?b.fecha.getTime():0));
+}
+
+function pintarInformeMes(){
+  const sel = document.getElementById("sel-mes");
+  const clave = sel.value;
+  const filas = registrosDelMes(clave);
+
+  /* Tabla */
+  const tbody = document.getElementById("tbody-mes");
+  const vacio = document.getElementById("vacio-mes");
+  tbody.innerHTML = "";
+  vacio.style.display = filas.length ? "none" : "block";
+
+  let total = 0;
+  filas.forEach(r=>{
+    total += r.monto;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${r.fechaTxt}</td>
+      <td>${r.sector}</td>
+      <td>${r.proveedor}</td>
+      <td>${r.tipo}</td>
+      <td>${r.numero}</td>
+      <td>${r.concepto || "—"}</td>
+      <td class="monto">${formatoMoneda(r.monto)}</td>
+      <td>${r.metodo}</td>
+      <td>${r.obs || "—"}</td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById("ticker-total-mes").textContent = formatoMoneda(total);
+  document.getElementById("ticker-cant-mes").textContent = filas.length + (filas.length === 1 ? " comprobante" : " comprobantes");
+
+  /* Comparación contra el mes anterior */
+  const meses = mesesOrdenados();
+  const idx = meses.indexOf(clave);
+  const claveAnt = idx > 0 ? meses[idx-1] : null;
+  const totalAnt = claveAnt ? registrosDelMes(claveAnt).reduce((a,r)=>a+r.monto,0) : null;
+
+  let variacionHtml = "sin mes anterior para comparar";
+  if (totalAnt != null){
+    if (totalAnt === 0){
+      variacionHtml = "el mes anterior no tuvo gastos";
+    } else {
+      const dif = total - totalAnt;
+      const pct = (dif/totalAnt)*100;
+      const clase = dif > 0 ? "down" : "up"; // más gasto = rojo
+      const signo = dif > 0 ? "▲ +" : "▼ ";
+      variacionHtml = `<span class="${clase}">${signo}${Math.abs(pct).toFixed(1)}%</span> vs ${labelMesCorto(claveAnt)} (${formatoMoneda(totalAnt)})`;
+    }
+  }
+
+  const prom = filas.length ? total/filas.length : 0;
+  const porSectorMes = {};
+  filas.forEach(r=>{ porSectorMes[r.sector] = (porSectorMes[r.sector]||0)+r.monto; });
+  const sectorTop = Object.keys(porSectorMes).sort((a,b)=>porSectorMes[b]-porSectorMes[a])[0];
+
+  const kpisMes = [
+    { label:"Total del mes", valor: formatoMoneda(total), extra: filas.length + " comprobantes" },
+    { label:"vs mes anterior", valor: "", extra: variacionHtml, soloExtra:true },
+    { label:"Ticket promedio", valor: formatoMoneda(prom), extra:"en el mes" },
+    { label:"Sector que más gastó", valor: sectorTop ? sectorTop : "—", extra: sectorTop ? formatoMoneda(porSectorMes[sectorTop]) : "" }
+  ];
+  document.getElementById("kpis-mes").innerHTML = kpisMes.map(k=>`
+    <div class="kpi">
+      <div class="k-label">${k.label}</div>
+      ${k.soloExtra ? "" : `<div class="k-valor">${k.valor}</div>`}
+      <div class="k-extra" ${k.soloExtra ? 'style="margin-top:10px; font-size:.85rem;"' : ""}>${k.extra}</div>
+    </div>`).join("");
+}
+
+/* ============================================================
+   6) EXPORTAR PDF DEL MES
+   ============================================================ */
+function cargarImagen(src){
+  return new Promise((resolve)=>{
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = ()=>{
+      try{
+        const c = document.createElement("canvas");
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext("2d").drawImage(img,0,0);
+        resolve({ dataUrl: c.toDataURL("image/png"), w: img.naturalWidth, h: img.naturalHeight });
+      }catch(e){ resolve(null); }
+    };
+    img.onerror = ()=> resolve(null);
+    img.src = src;
+  });
+}
+
+async function exportarPDF(){
+  const btn = document.getElementById("btn-pdf");
+  btn.disabled = true; btn.textContent = "Generando PDF…";
+
+  try{
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit:"pt", format:"a4" });
+    const W = doc.internal.pageSize.getWidth();
+    const margen = 40;
+
+    const clave = document.getElementById("sel-mes").value;
+    const filas = registrosDelMes(clave);
+    const total = filas.reduce((a,r)=>a+r.monto,0);
+
+    /* ---- Encabezado con logo ---- */
+    const logo = await cargarImagen("https://i.imgur.com/xZMOThF.png");
+    let y = margen;
+    if (logo){
+      const lw = 90, lh = logo.h * (lw/logo.w);
+      doc.addImage(logo.dataUrl, "PNG", margen, y, lw, lh);
+      y += lh + 6;
+    }
+    doc.setTextColor(26,24,29);
+    doc.setFont("helvetica","bold"); doc.setFontSize(18);
+    doc.text("Informe mensual de comprobantes", margen, y + 8);
+    doc.setFont("helvetica","normal"); doc.setFontSize(11); doc.setTextColor(90,90,96);
+    doc.text(labelMesLargo(clave) + "  ·  Escencial Consultora — Innovación y Desarrollo", margen, y + 26);
+    const hoy = new Date();
+    doc.setFontSize(9);
+    doc.text("Generado el " + fechaDDMMYYYY(hoy) + " " + String(hoy.getHours()).padStart(2,"0") + ":" + String(hoy.getMinutes()).padStart(2,"0"), margen, y + 40);
+    y += 58;
+
+    /* ---- Resumen (KPIs) ---- */
+    doc.setDrawColor(225,123,215); doc.setLineWidth(2);
+    doc.line(margen, y, W - margen, y);
+    y += 18;
+    const prom = filas.length ? total/filas.length : 0;
+    doc.setTextColor(26,24,29); doc.setFont("helvetica","bold"); doc.setFontSize(11);
+    doc.text("Total del mes: " + formatoMoneda(total), margen, y);
+    doc.text("Comprobantes: " + filas.length, margen + 240, y);
+    doc.text("Promedio: " + formatoMoneda(prom), margen + 400, y);
+    y += 22;
+
+    /* ---- Subtotales por sector ---- */
+    const porSector = {};
+    filas.forEach(r=>{ porSector[r.sector] = (porSector[r.sector]||0)+r.monto; });
+    const sectorRows = Object.keys(porSector).sort((a,b)=>porSector[b]-porSector[a])
+      .map(s=>[s, formatoMoneda(porSector[s]), ((porSector[s]/(total||1))*100).toFixed(1) + " %"]);
+
+    doc.autoTable({
+      startY: y,
+      head: [["Sector", "Total", "% del mes"]],
+      body: sectorRows,
+      margin: { left: margen, right: margen },
+      styles: { font:"helvetica", fontSize:9, cellPadding:5, overflow:"linebreak" },
+      headStyles: { fillColor:[26,24,29], textColor:[255,255,255], fontStyle:"bold" },
+      columnStyles: { 1:{ halign:"right" }, 2:{ halign:"right" } },
+      alternateRowStyles: { fillColor:[251,243,250] }
+    });
+    y = doc.lastAutoTable.finalY + 22;
+
+    /* ---- Detalle completo (autoTable pagina solo, no corta filas) ---- */
+    doc.setFont("helvetica","bold"); doc.setFontSize(12); doc.setTextColor(26,24,29);
+    doc.text("Detalle de comprobantes", margen, y);
+    y += 8;
+
+    doc.autoTable({
+      startY: y,
+      head: [["Fecha","Sector","Proveedor","Tipo","N° Comp.","Concepto","Monto","Método"]],
+      body: filas.map(r=>[
+        r.fechaTxt, r.sector, r.proveedor, r.tipo, r.numero,
+        r.concepto || "—", formatoMoneda(r.monto), r.metodo
+      ]),
+      foot: [["","","","","","Total", formatoMoneda(total), ""]],
+      margin: { left: margen, right: margen },
+      styles: { font:"helvetica", fontSize:8, cellPadding:4, overflow:"linebreak", valign:"middle" },
+      headStyles: { fillColor:[26,24,29], textColor:[255,255,255], fontStyle:"bold" },
+      footStyles: { fillColor:[225,123,215], textColor:[0,0,0], fontStyle:"bold" },
+      alternateRowStyles: { fillColor:[251,243,250] },
+      columnStyles: { 6:{ halign:"right" } },
+      rowPageBreak: "avoid"   // no parte una fila entre dos páginas
+    });
+
+    /* ---- Página de analítica general con los gráficos ---- */
+    doc.addPage();
+    doc.setFont("helvetica","bold"); doc.setFontSize(14); doc.setTextColor(26,24,29);
+    doc.text("Analítica general del proyecto", margen, margen + 6);
+    let yc = margen + 26;
+    const anchoImg = W - margen*2;
+
+    const graficos = [
+      { c: charts.mes, t: "Evolución del gasto por mes" },
+      { c: charts.sector, t: "Gasto por sector" },
+      { c: charts.tipo, t: "Gasto por tipo de comprobante" }
+    ];
+    for (const g of graficos){
+      if (!g.c) continue;
+      const img = g.c.toBase64Image("image/png", 1);
+      const props = doc.getImageProperties(img);
+      const h = props.height * (anchoImg/props.width);
+      if (yc + h + 24 > doc.internal.pageSize.getHeight() - margen){
+        doc.addPage(); yc = margen;
+      }
+      doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(26,24,29);
+      doc.text(g.t, margen, yc);
+      yc += 8;
+      /* fondo blanco por si el gráfico tiene zonas transparentes */
+      doc.setFillColor(255,255,255); doc.rect(margen, yc, anchoImg, h, "F");
+      doc.addImage(img, "PNG", margen, yc, anchoImg, h);
+      yc += h + 22;
+    }
+
+    /* ---- Pie de página con numeración ---- */
+    const totalPags = doc.internal.getNumberOfPages();
+    for (let i=1; i<=totalPags; i++){
+      doc.setPage(i);
+      doc.setFontSize(8); doc.setTextColor(160,160,170);
+      doc.text("ONE · Escencial Consultora — Innovación y Desarrollo", margen, doc.internal.pageSize.getHeight() - 18);
+      doc.text("Página " + i + " de " + totalPags, W - margen, doc.internal.pageSize.getHeight() - 18, { align:"right" });
+    }
+
+    doc.save("informe-comprobantes-" + clave + ".pdf");
+    mostrarToast("PDF generado ✔", "ok");
+  }catch(err){
+    console.error(err);
+    mostrarToast("No se pudo generar el PDF.", "fail");
+  }finally{
+    btn.disabled = false; btn.textContent = "⬇ Exportar PDF del mes";
+  }
+}
+
+/* ============================================================
+   7) TOAST
+   ============================================================ */
+let toastTimeout;
+function mostrarToast(texto, tipo){
+  const toast = document.getElementById("toast");
+  clearTimeout(toastTimeout);
+  toast.textContent = texto;
+  toast.className = "show " + (tipo === "ok" ? "ok" : "fail");
+  toastTimeout = setTimeout(()=> toast.classList.remove("show"), 3200);
+}
+
+/* ============================================================
+   8) ARRANQUE
+   ============================================================ */
+document.getElementById("sel-mes").addEventListener("change", pintarInformeMes);
+document.getElementById("btn-pdf").addEventListener("click", exportarPDF);
+document.getElementById("btn-refrescar").addEventListener("click", ()=> cargarDatos(true));
+
+function iniciarPanel(){
+  cargarDatos(false);
+}
+
+/* Si ya se logueó en esta pestaña, entra directo */
+if (estaAutenticado()){
+  abrirPanel();
+} else {
+  document.getElementById("login-user").focus();
+}
+</script>
+
+</body>
+</html>

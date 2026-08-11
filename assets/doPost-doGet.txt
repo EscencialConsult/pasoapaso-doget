@@ -1,0 +1,62 @@
+/* ============================================================
+   BACKEND COMPLETO — Google Apps Script
+   doPost (guardar) + doGet (leer) en un solo pegado.
+   Pegá TODO esto en Extensiones -> Apps Script, cambiá el
+   nombre de la hoja donde dice "Colocar aqui...", guardá y
+   publicá como aplicación web (Ejecutar como: Yo /
+   Quién tiene acceso: Cualquier usuario).
+   ============================================================ */
+
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+
+  try {
+    var doc = SpreadsheetApp.getActiveSpreadsheet();
+    var datosRecibidos = JSON.parse(e.postData.contents);
+    var sheet = doc.getSheetByName("Colocar aqui el Nombre de tu hoja de Google Sheets");
+
+    if (datosRecibidos.nombreHoja) {
+       sheet = doc.getSheetByName(datosRecibidos.nombreHoja);
+    }
+
+    if (Array.isArray(datosRecibidos.fila)) {
+      sheet.appendRow(datosRecibidos.fila);
+    } else {
+      throw new Error("El formato de los datos no es una lista (array).");
+    }
+
+    return ContentService.createTextOutput("Guardado").setMimeType(ContentService.MimeType.TEXT);
+  } catch (error) {
+    return ContentService.createTextOutput("Error: " + error.toString()).setMimeType(ContentService.MimeType.TEXT);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function doGet(e) {
+  var doc = SpreadsheetApp.getActiveSpreadsheet();
+  var nombreHoja = "Colocar aqui el Nombre de tu hoja de Google Sheets";
+
+  var params = (e && e.parameter) ? e.parameter : {};
+  if (params.hoja) {
+    nombreHoja = params.hoja; // opcional: ?hoja=OtraHoja en la URL
+  }
+
+  var sheet = doc.getSheetByName(nombreHoja);
+  var data = sheet.getDataRange().getValues();
+
+  var headers = data[0];
+  var rows = data.slice(1);
+
+  var registros = rows.map(function(row) {
+    var obj = {};
+    headers.forEach(function(header, index) {
+      obj[header] = row[index];
+    });
+    return obj;
+  });
+
+  return ContentService.createTextOutput(JSON.stringify(registros))
+    .setMimeType(ContentService.MimeType.JSON);
+}

@@ -34,8 +34,8 @@
   body{ font-family:'Exo 2', sans-serif; }
   .glass{
     background: rgba(26,24,29,0.55);
-    backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
     border: 1px solid rgba(255,255,255,0.08);
   }
   .glow-fucsia{ box-shadow: 0 0 60px -10px rgba(225,123,215,0.35); }
@@ -56,9 +56,9 @@
       <img src="assets/one-logocolor.webp" alt="ONE" class="h-8 w-auto">
       <span class="text-crema/60 text-xs hidden sm:inline">· Escencial Consultora</span>
     </div>
-    <a href="#final" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-crema bg-fucsia/90 hover:bg-fucsia px-3 sm:px-4 py-2 rounded-full transition">
+    <a href="#armar" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-crema bg-fucsia/90 hover:bg-fucsia px-3 sm:px-4 py-2 rounded-full transition">
       <i data-lucide="rocket" class="w-4 h-4"></i>
-      <span>Ver resultado final</span>
+      <span>Armar mi prompt</span>
     </a>
   </div>
 </nav>
@@ -82,9 +82,9 @@
       <span class="bg-gradient-to-r from-cian to-fucsia bg-clip-text text-transparent">Panel de Administración</span>
     </h1>
     <p class="mt-5 text-lavanda text-sm sm:text-base max-w-xl mx-auto">
-      Un panel que <strong>lee</strong> todos tus comprobantes desde una Google Sheet y los muestra con login,
-      gráficos, comparación mensual e informe exportable a PDF. Un solo backend con <strong>doPost</strong> (guardar)
-      + <strong>doGet</strong> (leer), y un archivo HTML aparte para el panel.
+      Un panel que <strong>lee</strong> tus comprobantes desde la Google Sheet y los muestra con login,
+      gráficos, comparación mensual e informe exportable a PDF. Podés armarlo de <strong>dos formas</strong>:
+      sumando solo el <strong>doGet</strong> a lo que ya tenés, o todo junto (<strong>doPost + doGet</strong>) desde cero.
     </p>
     <div class="mt-8 flex flex-wrap justify-center gap-3 text-xs sm:text-sm text-crema/80">
       <span class="glass rounded-full px-4 py-2 flex items-center gap-2"><i data-lucide="lock" class="w-4 h-4 text-fucsia"></i>Login</span>
@@ -102,49 +102,92 @@
       <i data-lucide="bot" class="w-5 h-5 text-cian"></i>
     </div>
     <div>
-      <h2 class="text-xl font-bold text-oscuro">¿Qué vamos a construir?</h2>
+      <h2 class="text-xl font-bold text-oscuro">Elegí tu camino</h2>
       <p class="mt-2 text-sm text-oscuro/70 leading-relaxed">
-        Un <strong>panel de administración</strong> que trae toda tu planilla de comprobantes y la muestra en un
-        tablero. El backend (Apps Script) lleva <strong>las dos funciones de una sola vez</strong>: <code>doPost</code>
-        para <em>guardar</em> y <code>doGet</code> para <em>leer</em>. Después armás el prompt de acá abajo —se
-        completa solo a medida que marcás cada paso— y la IA te genera el HTML del panel.
+        Los dos caminos llegan al <strong>mismo panel</strong>. Cambia solo cómo preparás el backend en Apps Script.
+        Abajo, en <a href="#armar" class="text-fucsia font-semibold underline">Armá tu prompt</a>, elegís la pestaña
+        que te sirva y el prompt se arma solo a medida que marcás cada paso.
       </p>
 
-      <div class="mt-4 bg-fucsia/10 border-2 border-fucsia rounded-xl p-4 flex gap-3">
-        <i data-lucide="shield-check" class="w-5 h-5 text-fucsia shrink-0 mt-0.5"></i>
-        <p class="text-sm text-oscuro/80"><strong>El backend (Apps Script) es siempre el mismo.</strong> No le pidas a
-        la IA que lo invente ni lo modifique: pegá exactamente el código del Paso 2, que ya trae <code>doPost</code> +
-        <code>doGet</code> juntos. Lo único que cambia entre proyectos es el HTML del panel.</p>
+      <div class="mt-5 grid sm:grid-cols-2 gap-4">
+        <div class="bg-white rounded-2xl border border-grisclaro/60 p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-7 h-7 rounded-lg bg-fucsia/15 text-fucsia font-bold flex items-center justify-center text-sm">1</span>
+            <h3 class="font-bold text-oscuro text-sm">Sumar el doGet a mi proyecto</h3>
+          </div>
+          <p class="text-sm text-oscuro/70 leading-relaxed">Ya tenés tu formulario de carga andando (doPost). Este método
+          <strong>solo agrega la lectura</strong>: pegás el doGet en el mismo Apps Script y publicás una versión nueva.
+          No rehacés nada de lo que ya funciona.</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-grisclaro/60 p-5">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-7 h-7 rounded-lg bg-cian/20 text-oscuro font-bold flex items-center justify-center text-sm">2</span>
+            <h3 class="font-bold text-oscuro text-sm">Todo junto (doPost + doGet)</h3>
+          </div>
+          <p class="text-sm text-oscuro/70 leading-relaxed">Método directo, <strong>sin anclarse a nada previo</strong>:
+          pegás el backend completo (doPost + doGet) de una sola vez y publicás. Ideal si arrancás de cero o querés todo
+          el proceso en una sola pasada.</p>
+        </div>
       </div>
 
-      <div class="mt-4 bg-dorado/10 border-2 border-dorado rounded-xl p-4 flex gap-3">
-        <i data-lucide="coins" class="w-5 h-5 text-dorado shrink-0 mt-0.5"></i>
-        <p class="text-sm text-oscuro/80"><strong>Truco para ahorrar tokens.</strong> Si ya generaste antes un
-        formulario de carga con una IA, pedile en el <em>mismo chat</em> que <strong>reutilice ese HTML</strong> y solo
-        le sume estas funciones nuevas (login, doGet, gráficos, PDF), en vez de escribir todo de cero. Si te quedaste sin
-        cupo, pasá el mismo prompt a otra herramienta gratuita: el paso a paso es igual.</p>
+      <div class="mt-5 bg-fucsia/10 border-2 border-fucsia rounded-xl p-4 flex gap-3">
+        <i data-lucide="shield-check" class="w-5 h-5 text-fucsia shrink-0 mt-0.5"></i>
+        <p class="text-sm text-oscuro/80"><strong>El backend (Apps Script) es siempre el mismo.</strong> No le pidas a
+        la IA que lo invente ni lo modifique: pegá exactamente el código del paso correspondiente. Lo único que cambia
+        entre proyectos es el HTML del panel.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ ARMÁ TU PROMPT ============ -->
-<section class="max-w-5xl mx-auto px-5 pb-6">
-  <div class="space-y-6" id="pasosPrompt"></div>
+<section id="armar" class="max-w-5xl mx-auto px-5 pb-6">
+  <h2 class="text-xl font-bold text-oscuro mb-1">Armá tu prompt</h2>
+  <p class="text-sm text-oscuro/60 mb-5">Elegí el método y marcá los pasos. Cada pestaña arma su propio prompt.</p>
 
-  <!-- Prompt en vivo (inline) -->
-  <div class="mt-8 bg-oscuro rounded-2xl overflow-hidden">
-    <div class="flex items-center justify-between px-5 py-3 border-b border-white/10">
-      <span class="text-xs font-semibold uppercase tracking-wider text-lavanda flex items-center gap-2">
-        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-cian"></i>
-        <span class="js-contador-pasos">Tu prompt (0/6 pasos marcados)</span>
-      </span>
-      <button type="button" class="js-btn-copiar flex items-center gap-1.5 text-xs font-semibold text-oscuro bg-crema hover:bg-white px-3 py-1.5 rounded-full transition">
-        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-        <span>Copiar</span>
-      </button>
+  <!-- Pestañas -->
+  <div class="flex flex-col sm:flex-row gap-2 mb-6" id="tabs"></div>
+
+  <!-- Panel método 1 -->
+  <div data-panel="sumar">
+    <div class="mb-6 bg-fucsia/5 border border-fucsia/30 rounded-xl p-4 flex gap-3">
+      <i data-lucide="git-merge" class="w-5 h-5 text-fucsia shrink-0 mt-0.5"></i>
+      <p class="text-sm text-oscuro/75" data-intro="sumar"></p>
     </div>
-    <pre class="js-prompt-texto text-cian text-xs sm:text-[13px] p-5 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[28rem]"></pre>
+    <div class="space-y-6" id="pasos-sumar"></div>
+    <div class="mt-8 bg-oscuro rounded-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-5 py-3 border-b border-white/10">
+        <span class="text-xs font-semibold uppercase tracking-wider text-lavanda flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-fucsia"></i>
+          <span class="js-contador" data-metodo="sumar">Tu prompt (0/6 pasos marcados)</span>
+        </span>
+        <button type="button" class="js-btn-copiar flex items-center gap-1.5 text-xs font-semibold text-oscuro bg-crema hover:bg-white px-3 py-1.5 rounded-full transition" data-metodo="sumar">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i><span>Copiar</span>
+        </button>
+      </div>
+      <pre class="js-prompt-texto text-cian text-xs sm:text-[13px] p-5 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[28rem]" data-metodo="sumar"></pre>
+    </div>
+  </div>
+
+  <!-- Panel método 2 -->
+  <div data-panel="completo" class="hidden">
+    <div class="mb-6 bg-cian/5 border border-cian/40 rounded-xl p-4 flex gap-3">
+      <i data-lucide="package" class="w-5 h-5 text-cian shrink-0 mt-0.5"></i>
+      <p class="text-sm text-oscuro/75" data-intro="completo"></p>
+    </div>
+    <div class="space-y-6" id="pasos-completo"></div>
+    <div class="mt-8 bg-oscuro rounded-2xl overflow-hidden">
+      <div class="flex items-center justify-between px-5 py-3 border-b border-white/10">
+        <span class="text-xs font-semibold uppercase tracking-wider text-lavanda flex items-center gap-2">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-cian"></i>
+          <span class="js-contador" data-metodo="completo">Tu prompt (0/6 pasos marcados)</span>
+        </span>
+        <button type="button" class="js-btn-copiar flex items-center gap-1.5 text-xs font-semibold text-oscuro bg-crema hover:bg-white px-3 py-1.5 rounded-full transition" data-metodo="completo">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i><span>Copiar</span>
+        </button>
+      </div>
+      <pre class="js-prompt-texto text-cian text-xs sm:text-[13px] p-5 overflow-x-auto whitespace-pre-wrap leading-relaxed max-h-[28rem]" data-metodo="completo"></pre>
+    </div>
   </div>
 </section>
 
@@ -157,15 +200,13 @@
     <div>
       <h2 class="text-xl font-bold text-oscuro">Después: probá el panel que te devuelva la IA</h2>
       <p class="mt-2 text-sm text-oscuro/70 leading-relaxed">
-        Pegale el prompt de arriba a Claude (o la IA que uses). Cuando te dé el HTML, guardalo como
-        <strong>comprobantes-panel-admin.html</strong> y abrilo con doble clic. Iniciá sesión con el usuario y
-        contraseña que definiste, y confirmá que <strong>aparecen los comprobantes que ya tenías cargados</strong> en
-        la Sheet. Ahí sabés que el doGet quedó bien conectado.
+        Pegale el prompt a Claude (o la IA que uses). Cuando te dé el HTML, guardalo como
+        <strong>comprobantes-panel-admin.html</strong> y abrilo. Iniciá sesión y confirmá que
+        <strong>aparecen los comprobantes que ya tenías cargados</strong> en la Sheet. Ahí sabés que el doGet quedó bien.
       </p>
       <p class="mt-3 text-sm text-oscuro/70 leading-relaxed">
-        <strong>Primero confirmá que lee los datos</strong> antes de pedir cambios de diseño. Si algo no aparece, casi
-        siempre es porque no publicaste una <em>versión nueva</em> del Web App (Paso 3) o el nombre de la pestaña no
-        coincide.
+        Si algo no aparece, casi siempre es porque no publicaste una <em>versión nueva</em> del Web App o el nombre de la
+        pestaña no coincide.
       </p>
     </div>
   </div>
@@ -183,7 +224,7 @@
     </span>
     <h2 class="text-2xl sm:text-3xl font-extrabold text-crema">Tu panel de administración, listo para usar</h2>
     <p class="mt-3 text-lavanda text-sm max-w-lg mx-auto">
-      Login, KPIs, gráficos de la analítica, comparación mes a mes e informe mensual exportable a PDF —
+      Login, KPIs, gráficos, comparación mes a mes e informe mensual exportable a PDF —
       todo leyendo en vivo desde la misma Google Sheet.
     </p>
 
@@ -218,18 +259,17 @@
     <button type="button" id="btnToggleFlotante" class="w-full flex items-center justify-between gap-2 px-4 py-3">
       <span class="text-xs font-semibold uppercase tracking-wider text-lavanda flex items-center gap-2 min-w-0">
         <i data-lucide="sparkles" class="w-3.5 h-3.5 text-cian shrink-0"></i>
-        <span class="js-contador-pasos truncate">Tu prompt (0/6 pasos marcados)</span>
+        <span id="flotante-contador" class="truncate">Elegí un método</span>
       </span>
       <i data-lucide="chevron-down" id="iconoToggleFlotante" class="w-4 h-4 text-lavanda shrink-0 transition-transform"></i>
     </button>
     <div id="cuerpoPromptFlotante" class="border-t border-white/10">
       <div class="flex justify-end px-4 py-2 border-b border-white/10">
-        <button type="button" class="js-btn-copiar flex items-center gap-1.5 text-xs font-semibold text-oscuro bg-crema hover:bg-white px-3 py-1.5 rounded-full transition">
-          <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-          <span>Copiar</span>
+        <button type="button" id="flotante-copiar" class="flex items-center gap-1.5 text-xs font-semibold text-oscuro bg-crema hover:bg-white px-3 py-1.5 rounded-full transition">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i><span>Copiar</span>
         </button>
       </div>
-      <pre class="js-prompt-texto text-cian text-xs p-4 overflow-auto whitespace-pre-wrap leading-relaxed max-h-[45vh]"></pre>
+      <pre id="flotante-prompt" class="text-cian text-xs p-4 overflow-auto whitespace-pre-wrap leading-relaxed max-h-[45vh]"></pre>
     </div>
   </div>
 </div>
@@ -242,7 +282,7 @@
   </div>
 </footer>
 
-<!-- ============ LIGHTBOX (zoom de capturas) ============ -->
+<!-- ============ LIGHTBOX ============ -->
 <div id="lightbox" class="fixed inset-0 z-[100] bg-black/90 hidden items-center justify-center p-6 cursor-zoom-out">
   <button type="button" id="btnCerrarLightbox" aria-label="Cerrar" class="absolute top-5 right-5 text-crema/80 hover:text-crema">
     <i data-lucide="x" class="w-7 h-7"></i>
@@ -254,12 +294,35 @@
 lucide.createIcons();
 
 /* ======================================================================
-   CÓDIGO REAL DE APPS SCRIPT — COMPLETO: doPost (guardar) + doGet (leer)
-   en un solo pegado. Este es el MISMO backend para todos los proyectos:
-   no se customiza (salvo el nombre de la hoja). En el PROMPT no va el
-   código completo — va un placeholder entre llaves para que cada uno
-   pegue el suyo.
+   CÓDIGOS DE APPS SCRIPT
    ====================================================================== */
+const CODIGO_DOGET = `function doGet(e) {
+  var doc = SpreadsheetApp.getActiveSpreadsheet();
+  var nombreHoja = "Colocar aqui el Nombre de tu hoja de Google Sheets";
+
+  var params = (e && e.parameter) ? e.parameter : {};
+  if (params.hoja) {
+    nombreHoja = params.hoja; // opcional: ?hoja=OtraHoja en la URL
+  }
+
+  var sheet = doc.getSheetByName(nombreHoja);
+  var data = sheet.getDataRange().getValues();
+
+  var headers = data[0];
+  var rows = data.slice(1);
+
+  var registros = rows.map(function(row) {
+    var obj = {};
+    headers.forEach(function(header, index) {
+      obj[header] = row[index];
+    });
+    return obj;
+  });
+
+  return ContentService.createTextOutput(JSON.stringify(registros))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+
 const CODIGO_BACKEND = `function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(10000);
@@ -315,23 +378,20 @@ function doGet(e) {
 }`;
 
 /* ======================================================================
-   PASOS DEL PROMPT
+   PASOS COMPARTIDOS (iguales en los dos métodos)
    ====================================================================== */
-const PASOS_PROMPT = [
-  {
-    icono: "message-circle",
-    titulo: "Contexto, objetivos y kit de marca",
-    resumen: "La base del prompt: qué panel querés, con qué funciones y con qué estilo visual.",
-    detalle: [
-      "Contexto: tenés comprobantes en una Google Sheet y querés un panel para verlos y analizarlos.",
-      "Objetivos: login, KPIs, gráficos, comparación mensual, informe mensual y exportación a PDF.",
-      "Kit de marca: colores y tipografías de ONE / Escencial, para que no salga un diseño genérico.",
-      "Logo (opcional): si va, tiene que ser un LINK DIRECTO a un .png. Si no, escribí \"SIN LOGO\"."
-    ],
-    codigo: null,
-    capturas: [],
-    seccionLabel: "PASO 1 · CONTEXTO, OBJETIVOS Y KIT DE MARCA",
-    bloque: `CONTEXTO:
+const S_CONTEXTO = {
+  icono: "message-circle",
+  titulo: "Contexto, objetivos y kit de marca",
+  resumen: "La base del prompt: qué panel querés, con qué funciones y con qué estilo visual.",
+  detalle: [
+    "Contexto: tenés comprobantes en una Google Sheet y querés un panel para verlos y analizarlos.",
+    "Objetivos: login, KPIs, gráficos, comparación mensual, informe mensual y exportación a PDF.",
+    "Kit de marca: colores y tipografías de ONE / Escencial, para que no salga un diseño genérico.",
+    "Logo (opcional): si va, tiene que ser un LINK DIRECTO a un .png. Si no, escribí \"SIN LOGO\"."
+  ],
+  seccionLabel: "PASO 1 · CONTEXTO, OBJETIVOS Y KIT DE MARCA",
+  bloque: `CONTEXTO:
 Trabajo en el área de Innovación y Desarrollo de Escencial Consultora. Tengo comprobantes (factura, recibo, nota de crédito) cargados en una Google Sheet. Necesito un PANEL DE ADMINISTRACIÓN, en un solo archivo HTML, que LEA todos esos comprobantes y me los muestre como tablero para analizar el gasto y armar informes. No carga datos nuevos: solo lee y muestra.
 
 OBJETIVOS:
@@ -356,123 +416,67 @@ KIT DE MARCA (ONE / Escencial):
 Tipografía: títulos "Exo 2" (Google Fonts), números en "Space Mono". Fondos crema/blanco, texto negro, acentos fucsia + cian con sutileza.
 
 LOGO: { PEGÁ ACÁ EL LINK DIRECTO A TU LOGO EN .PNG, O ESCRIBÍ "SIN LOGO" }`
+};
+
+const S_LOCALSTORAGE = {
+  icono: "database",
+  titulo: "Rendimiento: guardá los datos en el navegador (localStorage)",
+  resumen: "Para que el panel abra al instante aunque haya muchos comprobantes, se cachean los datos en el navegador.",
+  detalle: [
+    "La primera vez, el panel trae los datos con el doGet y los guarda en localStorage con la hora.",
+    "Las siguientes veces, abre al instante desde esa copia local, sin volver a pedirle a Google.",
+    "Un botón \"Actualizar datos\" fuerza traer todo de nuevo y refresca la copia.",
+    "Ideal cuando hay muchos registros: evita que cada visita tenga que esperar la descarga completa."
+  ],
+  explicacionSimple: {
+    titulo: "¿Qué es localStorage y por qué conviene usarlo acá?",
+    texto: [
+      `<strong>localStorage</strong> es un pequeño almacén que el navegador te da para guardar datos <em>en la propia computadora del usuario</em>, sin base de datos ni servidor. Guardás texto con una clave (como una cajita rotulada) y sigue ahí aunque cierres la pestaña.`,
+      `La idea: la primera vez que entrás al panel, bajamos todos los comprobantes <strong>una sola vez</strong> y dejamos una copia en localStorage. En las próximas visitas, el panel lee esa copia local y aparece <strong>al toque</strong>. Cuando querés ver lo último, tocás "Actualizar datos" y recién ahí vuelve a pedirle a Google.`,
+      `Esto importa cuando la planilla crece: sin caché, cada visita tendría que descargar TODO otra vez y se vuelve lenta. Con localStorage, la espera larga pasa una sola vez.`
+    ]
   },
-  {
-    icono: "code-2",
-    titulo: "Pegá el backend completo: doPost + doGet (una sola vez)",
-    resumen: "En un solo pegado va TODO el backend: doPost para guardar y doGet para leer. No hace falta pegarlos por separado.",
-    detalle: [
-      "En tu Google Sheet: Extensiones → Apps Script.",
-      "Borrá lo que haya y pegá EXACTAMENTE el código de acá abajo — ya trae doPost y doGet juntos.",
-      "Cambiá el nombre de la hoja dentro del código por el de tu pestaña (aparece en doPost y en doGet).",
-      "Guardá y ejecutá una vez: la primera vez Google te pide autorizar el acceso a tu cuenta.",
-      "Todavía no toma efecto de cara al panel: para eso hay que publicarlo (Paso 3)."
-    ],
-    codigo: CODIGO_BACKEND,
-    descarga: { href: "assets/doPost-doGet.txt", label: "Descargar el backend completo (.txt)" },
-    destacado: true,
-    explicacionSimple: {
-      titulo: "¿Por qué van doPost y doGet juntos, y qué hace cada uno?",
-      texto: [
-        `<strong>doPost</strong> es la función que <em>guarda</em>: un formulario le manda una fila y ella la agrega a la Sheet. <strong>doGet</strong> es la función espejo, para <em>leer</em>: cuando alguien entra a la URL del Web App (una petición GET, como abrir un link), devuelve <strong>toda la planilla convertida a JSON</strong>.`,
-        `El doGet abre la hoja, toma todas las filas con <code>getDataRange().getValues()</code>, usa la <strong>primera fila como los nombres de las columnas</strong> (Fecha, Sector, Proveedor…) y arma una lista de objetos: uno por comprobante, con cada dato bajo el nombre de su columna. Ese JSON es lo que el panel lee y grafica.`,
-        `Van <strong>los dos en el mismo proyecto y en un solo pegado</strong>: doPost para escribir, doGet para leer. Así, con una sola publicación del Web App, tu sistema puede guardar Y mostrar. Es el mismo backend para todos los proyectos: no se inventa por proyecto.`
-      ]
-    },
-    capturas: [
-      { titulo: "El editor de Apps Script con doPost y doGet pegados", archivo: "assets/capturas/doget-codigo.png" }
-    ],
-    seccionLabel: "PASO 2 · CÓMO LEE LOS DATOS (doGet)",
-    bloque: `CÓMO LEE LOS DATOS (doGet):
-El panel trae los datos con un fetch GET a la URL del Web App, agregándole ?hoja=NOMBRE_DE_LA_PESTAÑA al final. El doGet devuelve un JSON que es una LISTA de objetos, uno por comprobante, donde las claves son EXACTAMENTE los encabezados de mi Google Sheets:
-"Fecha", "Sector", "Proveedor", "Tipo de comprobante", "N° Comprobante", "Concepto", "Monto", "Método de pago", "Observaciones".
-IMPORTANTE al leer: "Monto" puede venir como número, y "Fecha" como texto dd/mm/aaaa o como fecha ISO. Parsealos de forma robusta antes de sumar, ordenar o agrupar por mes.`
-  },
-  {
-    icono: "cloud-upload",
-    titulo: "Publicá el Web App y copiá el link",
-    resumen: "Implementás como aplicación web y copiás la URL /exec: ese es el link que va a usar el panel para leer.",
-    detalle: [
-      "Si es la primera vez: Implementar → Nueva implementación → ⚙️ → Aplicación web.",
-      "Si ya tenías un Web App: Implementar → Gestionar implementaciones → editar (✏️) → Versión: Nueva versión.",
-      "Ejecutar como: Yo. Quién tiene acceso: Cualquier usuario. Implementar.",
-      "Copiá la URL final (termina en /exec).",
-      "Probala: pegá la URL en el navegador y agregale ?hoja=Hoja 1 — tenés que ver el JSON con tus comprobantes."
-    ],
-    codigo: null,
-    capturas: [
-      { titulo: "Implementar como aplicación web", archivo: "assets/capturas/doget-implementar.png" },
-      { titulo: "Nueva versión / nueva implementación", archivo: "assets/capturas/doget-nuevaversion.png" },
-      { titulo: "El JSON abierto en el navegador con ?hoja=", archivo: "assets/capturas/doget-json.png" }
-    ],
-    seccionLabel: "PASO 3 · HOJA Y LINK DE MI WEB APP",
-    bloque: `DATOS DE MI GOOGLE SHEETS Y WEB APP:
-Nombre exacto de la pestaña: { PONÉ ACÁ EL NOMBRE EXACTO DE TU PESTAÑA, EJ: "Hoja 1" }
-URL de mi aplicación web (con doPost + doGet publicados): { PEGÁ ACÁ TU URL, TIENE QUE TERMINAR EN /exec }
-El panel tiene que pedir los datos a: URL + "?hoja=" + nombreDeLaPestaña.`
-  },
-  {
-    icono: "database",
-    titulo: "Rendimiento: guardá los datos en el navegador (localStorage)",
-    resumen: "Para que el panel abra al instante aunque haya muchos comprobantes, se cachean los datos en el navegador.",
-    detalle: [
-      "La primera vez, el panel trae los datos con el doGet y los guarda en localStorage con la hora.",
-      "Las siguientes veces, abre al instante desde esa copia local, sin volver a pedirle a Google.",
-      "Un botón \"Actualizar datos\" fuerza traer todo de nuevo y refresca la copia.",
-      "Ideal cuando hay muchos registros: evita que cada visita tenga que esperar la descarga completa."
-    ],
-    codigo: null,
-    capturas: [],
-    explicacionSimple: {
-      titulo: "¿Qué es localStorage y por qué conviene usarlo acá?",
-      texto: [
-        `<strong>localStorage</strong> es un pequeño almacén que el navegador te da para guardar datos <em>en la propia computadora del usuario</em>, sin base de datos ni servidor. Guardás texto con una clave (como una cajita rotulada) y sigue ahí aunque cierres la pestaña o apagues la máquina.`,
-        `La idea es simple: la primera vez que entrás al panel, bajamos todos los comprobantes desde Google <strong>una sola vez</strong> y dejamos una copia en localStorage. En las próximas visitas, el panel lee esa copia local y aparece <strong>al toque</strong>. Cuando querés ver lo último, tocás "Actualizar datos" y recién ahí vuelve a pedirle a Google.`,
-        `Esto importa cuando la planilla crece: sin caché, cada vez que abrís el panel tendrías que descargar TODO otra vez y la carga se vuelve lenta. Con localStorage, la espera larga pasa una sola vez.`
-      ]
-    },
-    seccionLabel: "PASO 4 · RENDIMIENTO (localStorage)",
-    bloque: `RENDIMIENTO — GUARDAR EN EL NAVEGADOR (localStorage):
-La primera vez que se abre el panel, traé los datos con el doGet y guardalos en localStorage junto con la hora. Las siguientes veces, mostrá el panel al instante desde localStorage (sin volver a pedirle a Google) mientras la copia sea reciente. Sumá un botón "Actualizar datos" que fuerce traer de nuevo desde Google y refresque la copia. Mostrá en algún lado cuándo fue la última actualización. Así el panel no tarda en cargar aunque haya muchísimos comprobantes.`
-  },
-  {
-    icono: "lock",
-    titulo: "Seguridad: panel con usuario y contraseña",
-    resumen: "El panel muestra datos de todo el proyecto, así que antes de verlo hay que pasar un login.",
-    detalle: [
-      "Pantalla de login con usuario y contraseña antes de mostrar el panel.",
-      "Usuario y contraseña definidos arriba, en una sección de CONFIGURACIÓN, para cambiarlos fácil.",
-      "El acceso queda recordado durante la sesión (sessionStorage) y hay un botón \"Cerrar sesión\".",
-      "Es una puerta simple del lado del navegador: frena accesos casuales, no reemplaza seguridad real."
-    ],
-    codigo: null,
-    capturas: [],
-    seccionLabel: "PASO 5 · SEGURIDAD (LOGIN)",
-    bloque: `SEGURIDAD — LOGIN:
-Antes de mostrar el panel, pedí usuario y contraseña en una pantalla de login con el mismo estilo de marca. El usuario y la contraseña van definidos en una sección de CONFIGURACIÓN arriba del todo, para poder cambiarlos fácil. Guardá el acceso en sessionStorage para no re-pedirlo en cada recarga de la misma sesión, y sumá un botón "Cerrar sesión". Aclará en la pantalla que es una puerta simple del lado del navegador (no seguridad de banco): para datos muy sensibles habría que usar un backend con autenticación real.`
-  },
-  {
-    icono: "file-text",
-    titulo: "Informe mensual y exportación a PDF",
-    resumen: "El apartado que más conviene detallar: pedí el PDF con instrucciones bien específicas para que salga prolijo.",
-    detalle: [
-      "Selector de mes que arma el informe: tabla del mes, total y comparación con el mes anterior.",
-      "El PDF se genera con jsPDF + jspdf-autotable (por CDN).",
-      "Sé específico: renderizar el logo como imagen, no cortar filas, incluir los gráficos, usar los colores de marca.",
-      "Cuanto más detalle le des al pedido del PDF, menos correcciones vas a necesitar después."
-    ],
-    codigo: null,
-    capturas: [
-      { titulo: "El PDF mensual generado (ejemplo)", archivo: "assets/capturas/doget-pdf.png" }
-    ],
-    notaExtra: `<div class="mt-4 bg-dorado/10 border-2 border-dorado rounded-xl p-4 flex gap-3">
-      <i data-lucide="lightbulb" class="w-5 h-5 text-dorado shrink-0 mt-0.5"></i>
-      <p class="text-sm text-oscuro/80"><strong>El PDF es lo que más tokens consume.</strong> Por eso conviene ser
-      MUY específico de una: qué va en cada sección, que rendicen las imágenes, que no se corte ninguna fila, qué colores.
-      Un pedido detallado ahora te evita muchas idas y vueltas (y gasto) después.</p>
-    </div>`,
-    seccionLabel: "PASO 6 · INFORME MENSUAL Y PDF",
-    bloque: `INFORME MENSUAL Y EXPORTACIÓN A PDF (respetá estos detalles al pie):
+  seccionLabel: "PASO 4 · RENDIMIENTO (localStorage)",
+  bloque: `RENDIMIENTO — GUARDAR EN EL NAVEGADOR (localStorage):
+La primera vez que se abre el panel, traé los datos con el doGet y guardalos en localStorage junto con la hora. Las siguientes veces, mostrá el panel al instante desde localStorage (sin volver a pedirle a Google) mientras la copia sea reciente. Sumá un botón "Actualizar datos" que fuerce traer de nuevo desde Google y refresque la copia. Mostrá en algún lado cuándo fue la última actualización.`
+};
+
+const S_LOGIN = {
+  icono: "lock",
+  titulo: "Seguridad: panel con usuario y contraseña",
+  resumen: "El panel muestra datos de todo el proyecto, así que antes de verlo hay que pasar un login.",
+  detalle: [
+    "Pantalla de login con usuario y contraseña antes de mostrar el panel.",
+    "Usuario y contraseña definidos arriba, en una sección de CONFIGURACIÓN, para cambiarlos fácil.",
+    "El acceso queda recordado durante la sesión (sessionStorage) y hay un botón \"Cerrar sesión\".",
+    "Es una puerta simple del lado del navegador: frena accesos casuales, no reemplaza seguridad real."
+  ],
+  seccionLabel: "PASO 5 · SEGURIDAD (LOGIN)",
+  bloque: `SEGURIDAD — LOGIN:
+Antes de mostrar el panel, pedí usuario y contraseña en una pantalla de login con el mismo estilo de marca. El usuario y la contraseña van definidos en una sección de CONFIGURACIÓN arriba del todo, para poder cambiarlos fácil. Guardá el acceso en sessionStorage para no re-pedirlo en cada recarga de la misma sesión, y sumá un botón "Cerrar sesión". Aclará que es una puerta simple del lado del navegador (no seguridad de banco): para datos muy sensibles habría que usar un backend con autenticación real.`
+};
+
+const S_PDF = {
+  icono: "file-text",
+  titulo: "Informe mensual y exportación a PDF",
+  resumen: "El apartado que más conviene detallar: pedí el PDF con instrucciones bien específicas para que salga prolijo.",
+  detalle: [
+    "Selector de mes que arma el informe: tabla del mes, total y comparación con el mes anterior.",
+    "El PDF se genera con jsPDF + jspdf-autotable (por CDN).",
+    "Sé específico: renderizar el logo como imagen, no cortar filas, incluir los gráficos, usar los colores de marca.",
+    "Cuanto más detalle le des al pedido del PDF, menos correcciones vas a necesitar después."
+  ],
+  capturas: [
+    { titulo: "El PDF mensual generado (ejemplo)", archivo: "assets/capturas/doget-pdf.png" }
+  ],
+  notaExtra: `<div class="mt-4 bg-dorado/10 border-2 border-dorado rounded-xl p-4 flex gap-3">
+    <i data-lucide="lightbulb" class="w-5 h-5 text-dorado shrink-0 mt-0.5"></i>
+    <p class="text-sm text-oscuro/80"><strong>El PDF es lo que más tokens consume.</strong> Por eso conviene ser
+    MUY específico de una: qué va en cada sección, que rendicen las imágenes, que no se corte ninguna fila, qué colores.
+    Un pedido detallado ahora te evita muchas idas y vueltas (y gasto) después.</p>
+  </div>`,
+  seccionLabel: "PASO 6 · INFORME MENSUAL Y PDF",
+  bloque: `INFORME MENSUAL Y EXPORTACIÓN A PDF (respetá estos detalles al pie):
 - El PDF se genera con jsPDF + jspdf-autotable (por CDN), sin cortar contenido.
 - Encabezado del PDF: renderizá el logo como imagen (no lo saltees), el título "Informe mensual de comprobantes", el mes y la fecha/hora de generación.
 - Resumen arriba: total del mes, cantidad de comprobantes y ticket promedio.
@@ -483,48 +487,162 @@ Antes de mostrar el panel, pedí usuario y contraseña en una pantalla de login 
 - Numeración "Página X de Y" y pie de marca en todas las hojas.
 - Colores de marca: encabezados de tabla en oscuro #1a181d con texto blanco, filas alternas en un fucsia muy claro, total en fucsia #e17bd7, acentos en cian #6be1e3.
 - El archivo se descarga como informe-comprobantes-AAAA-MM.pdf.`
+};
+
+/* Bloque de prompt sobre cómo lee los datos (va en el paso de Apps Script de ambos métodos) */
+const BLOQUE_DOGET = `CÓMO LEE LOS DATOS (doGet):
+El panel trae los datos con un fetch GET a la URL del Web App, agregándole ?hoja=NOMBRE_DE_LA_PESTAÑA al final. El doGet devuelve un JSON que es una LISTA de objetos, uno por comprobante, donde las claves son EXACTAMENTE los encabezados de mi Google Sheets:
+"Fecha", "Sector", "Proveedor", "Tipo de comprobante", "N° Comprobante", "Concepto", "Monto", "Método de pago", "Observaciones".
+IMPORTANTE al leer: "Monto" puede venir como número, y "Fecha" como texto dd/mm/aaaa o como fecha ISO. Parsealos de forma robusta antes de sumar, ordenar o agrupar por mes.`;
+
+const BLOQUE_LINK = `DATOS DE MI GOOGLE SHEETS Y WEB APP:
+Nombre exacto de la pestaña: { PONÉ ACÁ EL NOMBRE EXACTO DE TU PESTAÑA, EJ: "Hoja 1" }
+URL de mi aplicación web (con doGet publicado): { PEGÁ ACÁ TU URL, TIENE QUE TERMINAR EN /exec }
+El panel tiene que pedir los datos a: URL + "?hoja=" + nombreDeLaPestaña.`;
+
+/* ======================================================================
+   PASOS ESPECÍFICOS — MÉTODO 1 (sumar el doGet)
+   ====================================================================== */
+const S_DOGET_SOLO = {
+  icono: "code-2",
+  titulo: "Sumá el código doGet DEBAJO del doPost (sin borrar nada)",
+  resumen: "Vas a tu MISMO Apps Script y pegás el doGet abajo del doPost que ya tenías. No reemplaza nada: le suma leer.",
+  detalle: [
+    "En tu Google Sheet: Extensiones → Apps Script (el mismo proyecto de tu formulario de carga).",
+    "Dejá el doPost como está y, DEBAJO, pegá exactamente la función doGet de acá abajo.",
+    "Cambiá el nombre de la hoja dentro del doGet por el de tu pestaña (o dejá que el panel lo mande con ?hoja=...).",
+    "Guardá. Todavía no toma efecto: para eso hay que publicar una versión nueva (Paso 3)."
+  ],
+  codigo: CODIGO_DOGET,
+  descarga: { href: "assets/doGet.txt", label: "Descargar solo el doGet (.txt)" },
+  destacado: true,
+  explicacionSimple: {
+    titulo: "¿Qué hace el doGet y en qué se diferencia del doPost?",
+    texto: [
+      `<strong>doPost</strong> es la función que ya usabas para <em>guardar</em>: el formulario le manda una fila y ella la agrega a la Sheet. <strong>doGet</strong> es la función espejo, para <em>leer</em>: cuando alguien entra a la URL del Web App (una petición GET, como abrir un link), devuelve <strong>toda la planilla convertida a JSON</strong>.`,
+      `El doGet abre la hoja, toma todas las filas con <code>getDataRange().getValues()</code>, usa la <strong>primera fila como los nombres de las columnas</strong> y arma una lista de objetos: uno por comprobante. Ese JSON es lo que el panel lee y grafica.`,
+      `Por eso <strong>los dos conviven</strong> en el mismo proyecto: doPost para escribir, doGet para leer. No hay que borrar nada — solo pegar el doGet debajo.`
+    ]
+  },
+  capturas: [
+    { titulo: "El editor con doPost arriba y doGet pegado abajo", archivo: "assets/capturas/doget-codigo.png" }
+  ],
+  seccionLabel: "PASO 2 · CÓMO LEE LOS DATOS (doGet)",
+  bloque: BLOQUE_DOGET
+};
+
+const S_REDEPLOY = {
+  icono: "cloud-upload",
+  titulo: "Volvé a publicar: NUEVA VERSIÓN → nuevo link",
+  resumen: "Editaste el código, así que hay que publicar una versión nueva para que el doGet tome efecto.",
+  detalle: [
+    "Implementar → Gestionar implementaciones → editá tu implementación (el ✏️).",
+    "En \"Versión\" elegí Nueva versión (si no, los cambios del doGet no toman efecto).",
+    "Ejecutar como: Yo. Quién tiene acceso: Cualquier usuario. Implementar.",
+    "Copiá la URL final (termina en /exec).",
+    "Probala: pegá la URL en el navegador y agregale ?hoja=Hoja 1 — tenés que ver el JSON con tus comprobantes."
+  ],
+  capturas: [
+    { titulo: "Gestionar implementaciones → editar", archivo: "assets/capturas/doget-implementar.png" },
+    { titulo: "Elegir \"Nueva versión\" e implementar", archivo: "assets/capturas/doget-nuevaversion.png" },
+    { titulo: "El JSON abierto en el navegador con ?hoja=", archivo: "assets/capturas/doget-json.png" }
+  ],
+  seccionLabel: "PASO 3 · HOJA Y LINK DE MI WEB APP",
+  bloque: BLOQUE_LINK
+};
+
+/* ======================================================================
+   PASOS ESPECÍFICOS — MÉTODO 2 (todo junto)
+   ====================================================================== */
+const S_BACKEND = {
+  icono: "code-2",
+  titulo: "Pegá el backend completo: doPost + doGet (una sola vez)",
+  resumen: "En un solo pegado va TODO el backend: doPost para guardar y doGet para leer. No hace falta pegarlos por separado.",
+  detalle: [
+    "En tu Google Sheet: Extensiones → Apps Script.",
+    "Borrá lo que haya y pegá EXACTAMENTE el código de acá abajo — ya trae doPost y doGet juntos.",
+    "Cambiá el nombre de la hoja dentro del código por el de tu pestaña (aparece en doPost y en doGet).",
+    "Guardá y ejecutá una vez: la primera vez Google te pide autorizar el acceso a tu cuenta.",
+    "Todavía no toma efecto de cara al panel: para eso hay que publicarlo (Paso 3)."
+  ],
+  codigo: CODIGO_BACKEND,
+  descarga: { href: "assets/doPost-doGet.txt", label: "Descargar el backend completo (.txt)" },
+  destacado: true,
+  explicacionSimple: {
+    titulo: "¿Por qué van doPost y doGet juntos, y qué hace cada uno?",
+    texto: [
+      `<strong>doPost</strong> es la función que <em>guarda</em>: un formulario le manda una fila y ella la agrega a la Sheet. <strong>doGet</strong> es la función espejo, para <em>leer</em>: devuelve <strong>toda la planilla convertida a JSON</strong> cuando entrás a la URL del Web App.`,
+      `El doGet abre la hoja, toma todas las filas, usa la primera fila como los nombres de las columnas y arma una lista de objetos: uno por comprobante. Ese JSON es lo que el panel lee y grafica.`,
+      `Van <strong>los dos en un solo pegado</strong>: con una sola publicación del Web App, tu sistema puede guardar Y mostrar. Es el mismo backend para todos los proyectos: no se inventa por proyecto.`
+    ]
+  },
+  capturas: [
+    { titulo: "El editor de Apps Script con doPost y doGet pegados", archivo: "assets/capturas/doget-codigo.png" }
+  ],
+  seccionLabel: "PASO 2 · CÓMO LEE LOS DATOS (doGet)",
+  bloque: BLOQUE_DOGET
+};
+
+const S_PUBLICAR = {
+  icono: "cloud-upload",
+  titulo: "Publicá el Web App y copiá el link",
+  resumen: "Implementás como aplicación web y copiás la URL /exec: ese es el link que va a usar el panel para leer.",
+  detalle: [
+    "Si es la primera vez: Implementar → Nueva implementación → ⚙️ → Aplicación web.",
+    "Si ya tenías un Web App: Implementar → Gestionar implementaciones → editar (✏️) → Versión: Nueva versión.",
+    "Ejecutar como: Yo. Quién tiene acceso: Cualquier usuario. Implementar.",
+    "Copiá la URL final (termina en /exec).",
+    "Probala: pegá la URL en el navegador y agregale ?hoja=Hoja 1 — tenés que ver el JSON con tus comprobantes."
+  ],
+  capturas: [
+    { titulo: "Implementar como aplicación web", archivo: "assets/capturas/doget-implementar.png" },
+    { titulo: "Nueva versión / nueva implementación", archivo: "assets/capturas/doget-nuevaversion.png" },
+    { titulo: "El JSON abierto en el navegador con ?hoja=", archivo: "assets/capturas/doget-json.png" }
+  ],
+  seccionLabel: "PASO 3 · HOJA Y LINK DE MI WEB APP",
+  bloque: BLOQUE_LINK
+};
+
+/* ======================================================================
+   MÉTODOS
+   ====================================================================== */
+const METODOS = {
+  sumar: {
+    nombre: "Sumar el doGet",
+    tabIcono: "git-merge",
+    tabTitulo: "① Sumar el doGet a mi proyecto",
+    intro: "Ya tenés tu formulario de carga andando (doPost). Este método SOLO agrega la lectura: pegás el doGet en el mismo Apps Script, publicás una versión nueva y armás el panel. No rehacés nada de lo que ya funciona.",
+    pasos: [ S_CONTEXTO, S_DOGET_SOLO, S_REDEPLOY, S_LOCALSTORAGE, S_LOGIN, S_PDF ]
+  },
+  completo: {
+    nombre: "Todo junto",
+    tabIcono: "package",
+    tabTitulo: "② Todo junto (doPost + doGet)",
+    intro: "Método directo, sin anclarse a nada previo: pegás el backend completo (doPost + doGet) de una sola vez, publicás y armás el panel. Ideal si arrancás de cero o querés todo el proceso en una sola pasada.",
+    pasos: [ S_CONTEXTO, S_BACKEND, S_PUBLICAR, S_LOCALSTORAGE, S_LOGIN, S_PDF ]
   }
-];
+};
 
 const INTRO_PROMPT = `Quiero que armes un único archivo HTML (sin build, sin instalar nada) para un PANEL DE ADMINISTRACIÓN que LEE los comprobantes ya cargados en mi Google Sheets (vía doGet) y los muestra en un tablero con login, gráficos, comparación mensual e informe mensual exportable a PDF.`;
+
+/* ======================================================================
+   ESTADO Y RENDER
+   ====================================================================== */
+const estado = {
+  sumar:    { hechos: METODOS.sumar.pasos.map(()=>false),    prompt: "" },
+  completo: { hechos: METODOS.completo.pasos.map(()=>false), prompt: "" }
+};
+let metodoActivo = "sumar";
 
 function divisor(texto){
   const linea = "_".repeat(44);
   return `${linea}\n${texto}\n${linea}`;
 }
 
-const pasosCompletados = PASOS_PROMPT.map(()=>false);
-let PROMPT_ACTUAL = "";
-
-function renderPromptVivo(){
-  const bloques = [INTRO_PROMPT];
-  PASOS_PROMPT.forEach((paso, i)=>{
-    if(pasosCompletados[i]){
-      bloques.push(`${divisor(paso.seccionLabel)}\n\n${paso.bloque}`);
-    }
-  });
-  PROMPT_ACTUAL = bloques.join("\n\n");
-  document.querySelectorAll(".js-prompt-texto").forEach(el => el.textContent = PROMPT_ACTUAL);
-
-  const hechos = pasosCompletados.filter(Boolean).length;
-  const textoContador = `Tu prompt (${hechos}/${PASOS_PROMPT.length} pasos marcados)`;
-  document.querySelectorAll(".js-contador-pasos").forEach(el => el.textContent = textoContador);
-}
-
-function actualizarBotonPaso(btn, hecho){
-  btn.className = hecho
-    ? "btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition bg-fucsia border-fucsia text-white"
-    : "btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition border-grisclaro text-oscuro/60";
-  btn.innerHTML = hecho
-    ? `<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i><span>Hecho</span>`
-    : `<i data-lucide="circle" class="w-3.5 h-3.5"></i><span>Marcar hecho</span>`;
-}
-
-const contPasos = document.getElementById("pasosPrompt");
-PASOS_PROMPT.forEach((paso, i)=>{
+function construirCard(paso, clave, i){
   const destacado = !!paso.destacado;
   const card = document.createElement("div");
-  card.id = `card-paso-${i}`;
+  card.id = `card-${clave}-${i}`;
   card.className = destacado
     ? "bg-dorado/10 border-2 border-dorado rounded-2xl p-5 sm:p-7 transition"
     : "bg-white rounded-2xl border border-grisclaro/60 shadow-sm shadow-oscuro/5 p-5 sm:p-7 transition";
@@ -539,24 +657,21 @@ PASOS_PROMPT.forEach((paso, i)=>{
   const descargaHtml = paso.descarga ? `
     <a href="${paso.descarga.href}" download
        class="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-oscuro bg-crema border border-grisclaro hover:bg-white px-3 py-2 rounded-full transition">
-      <i data-lucide="file-down" class="w-3.5 h-3.5"></i>
-      ${paso.descarga.label}
-    </a>
-  ` : "";
+      <i data-lucide="file-down" class="w-3.5 h-3.5"></i>${paso.descarga.label}
+    </a>` : "";
 
   const explicacionHtml = paso.explicacionSimple ? `
     <div class="mt-4">
-      <button type="button" class="btn-toggle-explicacion inline-flex items-center gap-1.5 text-xs font-semibold text-dorado bg-dorado/10 hover:bg-dorado/20 border border-dorado/40 px-3 py-2 rounded-full transition" data-idx="${i}">
+      <button type="button" class="btn-toggle-explicacion inline-flex items-center gap-1.5 text-xs font-semibold text-dorado bg-dorado/10 hover:bg-dorado/20 border border-dorado/40 px-3 py-2 rounded-full transition" data-metodo="${clave}" data-idx="${i}">
         <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
         <span>¿Qué significa esto y para qué sirve?</span>
         <i data-lucide="chevron-down" class="w-3.5 h-3.5 icono-explicacion transition-transform"></i>
       </button>
-      <div id="explicacion-${i}" class="explicacion-panel hidden mt-3 bg-oscuro/[0.04] border border-dorado/30 rounded-xl p-4 space-y-3">
+      <div id="explicacion-${clave}-${i}" class="hidden mt-3 bg-oscuro/[0.04] border border-dorado/30 rounded-xl p-4 space-y-3">
         <h4 class="text-sm font-bold text-oscuro flex items-center gap-2"><i data-lucide="lightbulb" class="w-4 h-4 text-dorado"></i>${paso.explicacionSimple.titulo}</h4>
         ${paso.explicacionSimple.texto.map(p => `<p class="text-sm text-oscuro/75 leading-relaxed">${p}</p>`).join("")}
       </div>
-    </div>
-  ` : "";
+    </div>` : "";
 
   const capturasHtml = (paso.capturas && paso.capturas.length) ? `
     <div class="mt-4 grid gap-3 ${paso.capturas.length > 1 ? "sm:grid-cols-2" : ""}">
@@ -567,10 +682,8 @@ PASOS_PROMPT.forEach((paso, i)=>{
             ${cap.titulo}<br>
             <span class="text-oscuro/35">${cap.archivo}</span>
           </div>
-        </div>
-      `).join("")}
-    </div>
-  ` : "";
+        </div>`).join("")}
+    </div>` : "";
 
   card.innerHTML = `
     <div class="flex items-start justify-between gap-3">
@@ -583,9 +696,8 @@ PASOS_PROMPT.forEach((paso, i)=>{
           <h3 class="text-base sm:text-lg font-bold text-oscuro leading-tight">${paso.titulo}</h3>
         </div>
       </div>
-      <button type="button" class="btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition border-grisclaro text-oscuro/60" data-idx="${i}">
-        <i data-lucide="circle" class="w-3.5 h-3.5"></i>
-        <span>Marcar hecho</span>
+      <button type="button" class="btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition border-grisclaro text-oscuro/60" data-metodo="${clave}" data-idx="${i}">
+        <i data-lucide="circle" class="w-3.5 h-3.5"></i><span>Marcar hecho</span>
       </button>
     </div>
     <p class="mt-3 text-sm text-oscuro/70">${paso.resumen}</p>
@@ -596,50 +708,130 @@ PASOS_PROMPT.forEach((paso, i)=>{
     ${capturasHtml}
     ${paso.notaExtra || ""}
   `;
-  contPasos.appendChild(card);
+  return card;
+}
+
+function renderMetodo(clave){
+  const cont = document.getElementById("pasos-" + clave);
+  cont.innerHTML = "";
+  METODOS[clave].pasos.forEach((paso, i)=> cont.appendChild(construirCard(paso, clave, i)));
+  document.querySelector(`[data-intro="${clave}"]`).textContent = METODOS[clave].intro;
+}
+
+function renderPrompt(clave){
+  const m = METODOS[clave];
+  const bloques = [INTRO_PROMPT];
+  m.pasos.forEach((paso, i)=>{
+    if(estado[clave].hechos[i]) bloques.push(`${divisor(paso.seccionLabel)}\n\n${paso.bloque}`);
+  });
+  const texto = bloques.join("\n\n");
+  estado[clave].prompt = texto;
+  document.querySelectorAll(`.js-prompt-texto[data-metodo="${clave}"]`).forEach(el => el.textContent = texto);
+  const hechos = estado[clave].hechos.filter(Boolean).length;
+  document.querySelectorAll(`.js-contador[data-metodo="${clave}"]`).forEach(el => el.textContent = `Tu prompt (${hechos}/${m.pasos.length} pasos marcados)`);
+  if(clave === metodoActivo) actualizarFlotante();
+}
+
+function actualizarFlotante(){
+  const m = METODOS[metodoActivo];
+  const hechos = estado[metodoActivo].hechos.filter(Boolean).length;
+  document.getElementById("flotante-prompt").textContent = estado[metodoActivo].prompt || "";
+  document.getElementById("flotante-contador").textContent = `${m.nombre} · ${hechos}/${m.pasos.length} pasos`;
+}
+
+function estiloTab(btn, activo){
+  btn.className = activo
+    ? "tab-btn flex-1 flex items-center justify-center gap-2 text-sm font-semibold px-4 py-3 rounded-xl border-2 transition bg-oscuro text-crema border-oscuro"
+    : "tab-btn flex-1 flex items-center justify-center gap-2 text-sm font-semibold px-4 py-3 rounded-xl border-2 transition bg-white text-oscuro/60 border-grisclaro hover:border-fucsia";
+}
+
+function activarMetodo(clave){
+  metodoActivo = clave;
+  document.querySelectorAll("[data-panel]").forEach(p => p.classList.toggle("hidden", p.dataset.panel !== clave));
+  document.querySelectorAll(".tab-btn").forEach(b => estiloTab(b, b.dataset.tab === clave));
+  actualizarFlotante();
+  lucide.createIcons();
+}
+
+function actualizarBotonPaso(btn, hecho){
+  btn.className = hecho
+    ? "btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition bg-fucsia border-fucsia text-white"
+    : "btn-toggle-paso shrink-0 flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full border transition border-grisclaro text-oscuro/60";
+  btn.innerHTML = hecho
+    ? `<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i><span>Hecho</span>`
+    : `<i data-lucide="circle" class="w-3.5 h-3.5"></i><span>Marcar hecho</span>`;
+}
+
+/* ---------- Construir pestañas ---------- */
+const tabsCont = document.getElementById("tabs");
+Object.keys(METODOS).forEach(clave=>{
+  const b = document.createElement("button");
+  b.type = "button";
+  b.dataset.tab = clave;
+  estiloTab(b, clave === metodoActivo);
+  b.innerHTML = `<i data-lucide="${METODOS[clave].tabIcono}" class="w-4 h-4"></i><span>${METODOS[clave].tabTitulo}</span>`;
+  tabsCont.appendChild(b);
 });
 
-contPasos.addEventListener("click", async (ev)=>{
-  const btnExplicacion = ev.target.closest(".btn-toggle-explicacion");
-  if(btnExplicacion){
-    const idx = Number(btnExplicacion.dataset.idx);
-    const panel = document.getElementById(`explicacion-${idx}`);
-    const icono = btnExplicacion.querySelector(".icono-explicacion");
+/* ---------- Render inicial ---------- */
+renderMetodo("sumar");
+renderMetodo("completo");
+renderPrompt("sumar");
+renderPrompt("completo");
+activarMetodo("sumar");
+
+/* ---------- Eventos ---------- */
+document.getElementById("tabs").addEventListener("click", (ev)=>{
+  const b = ev.target.closest(".tab-btn");
+  if(b) activarMetodo(b.dataset.tab);
+});
+
+document.addEventListener("click", (ev)=>{
+  const btnExp = ev.target.closest(".btn-toggle-explicacion");
+  if(btnExp){
+    const { metodo, idx } = btnExp.dataset;
+    const panel = document.getElementById(`explicacion-${metodo}-${idx}`);
+    const icono = btnExp.querySelector(".icono-explicacion");
     const abierto = panel.classList.toggle("hidden") === false;
     icono.style.transform = abierto ? "rotate(180deg)" : "rotate(0deg)";
     return;
   }
 
-  const btn = ev.target.closest(".btn-toggle-paso");
-  if(!btn) return;
-  const idx = Number(btn.dataset.idx);
-  pasosCompletados[idx] = !pasosCompletados[idx];
-  actualizarBotonPaso(btn, pasosCompletados[idx]);
-  const card = document.getElementById(`card-paso-${idx}`);
-  card.classList.toggle("ring-2", pasosCompletados[idx]);
-  card.classList.toggle("ring-fucsia/40", pasosCompletados[idx]);
-  card.classList.toggle("border-fucsia", pasosCompletados[idx]);
-  renderPromptVivo();
-  lucide.createIcons();
+  const btnPaso = ev.target.closest(".btn-toggle-paso");
+  if(btnPaso){
+    const clave = btnPaso.dataset.metodo;
+    const idx = Number(btnPaso.dataset.idx);
+    estado[clave].hechos[idx] = !estado[clave].hechos[idx];
+    actualizarBotonPaso(btnPaso, estado[clave].hechos[idx]);
+    const card = document.getElementById(`card-${clave}-${idx}`);
+    card.classList.toggle("ring-2", estado[clave].hechos[idx]);
+    card.classList.toggle("ring-fucsia/40", estado[clave].hechos[idx]);
+    card.classList.toggle("border-fucsia", estado[clave].hechos[idx]);
+    renderPrompt(clave);
+    lucide.createIcons();
+    return;
+  }
 });
+
+/* ---------- Copiar ---------- */
+async function copiar(btn, texto){
+  const orig = btn.innerHTML;
+  try{
+    await navigator.clipboard.writeText(texto);
+    btn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i><span>Copiado</span>`;
+  }catch(e){
+    btn.innerHTML = `<i data-lucide="x" class="w-3.5 h-3.5"></i><span>No se pudo</span>`;
+  }
+  lucide.createIcons();
+  setTimeout(()=>{ btn.innerHTML = orig; lucide.createIcons(); }, 2000);
+}
 
 document.querySelectorAll(".js-btn-copiar").forEach(btn=>{
-  btn.addEventListener("click", async (ev)=>{
-    const b = ev.currentTarget;
-    try{
-      await navigator.clipboard.writeText(PROMPT_ACTUAL);
-      b.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i><span>Copiado</span>`;
-    } catch(err){
-      b.innerHTML = `<i data-lucide="x" class="w-3.5 h-3.5"></i><span>No se pudo copiar</span>`;
-    }
-    lucide.createIcons();
-    setTimeout(()=>{
-      b.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i><span>Copiar</span>`;
-      lucide.createIcons();
-    }, 2000);
-  });
+  btn.addEventListener("click", ()=> copiar(btn, estado[btn.dataset.metodo].prompt));
 });
+document.getElementById("flotante-copiar").addEventListener("click", (ev)=> copiar(ev.currentTarget, estado[metodoActivo].prompt));
 
+/* ---------- Flotante minimizar ---------- */
 document.getElementById("btnToggleFlotante").addEventListener("click", ()=>{
   const cuerpo = document.getElementById("cuerpoPromptFlotante");
   const icono = document.getElementById("iconoToggleFlotante");
@@ -666,7 +858,6 @@ document.addEventListener("click", (ev)=>{
 });
 document.addEventListener("keydown", (ev)=>{ if(ev.key === "Escape") cerrarLightbox(); });
 
-renderPromptVivo();
 lucide.createIcons();
 </script>
 

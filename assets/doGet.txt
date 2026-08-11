@@ -1,0 +1,34 @@
+/* ============================================================
+   SOLO doGet (leer) — Google Apps Script
+   Pegá ESTA función DEBAJO del doPost que YA tenías en tu
+   proyecto de Apps Script. No borres el doPost: se suman.
+   Cambiá el nombre de la hoja donde dice "Colocar aqui...".
+   Después publicá una NUEVA VERSIÓN del Web App.
+   ============================================================ */
+
+function doGet(e) {
+  var doc = SpreadsheetApp.getActiveSpreadsheet();
+  var nombreHoja = "Colocar aqui el Nombre de tu hoja de Google Sheets";
+
+  var params = (e && e.parameter) ? e.parameter : {};
+  if (params.hoja) {
+    nombreHoja = params.hoja; // opcional: ?hoja=OtraHoja en la URL
+  }
+
+  var sheet = doc.getSheetByName(nombreHoja);
+  var data = sheet.getDataRange().getValues();
+
+  var headers = data[0];
+  var rows = data.slice(1);
+
+  var registros = rows.map(function(row) {
+    var obj = {};
+    headers.forEach(function(header, index) {
+      obj[header] = row[index];
+    });
+    return obj;
+  });
+
+  return ContentService.createTextOutput(JSON.stringify(registros))
+    .setMimeType(ContentService.MimeType.JSON);
+}

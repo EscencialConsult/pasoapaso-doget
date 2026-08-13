@@ -439,21 +439,7 @@ function doGet(e) {
 /* ======================================================================
    PASOS COMPARTIDOS (iguales en los dos métodos)
    ====================================================================== */
-const S_CONTEXTO = {
-  icono: "message-circle",
-  titulo: "Contexto, objetivos y kit de marca",
-  resumen: "La base del prompt: qué panel querés, con qué funciones y con qué estilo visual.",
-  detalle: [
-    "Contexto: tenés comprobantes en una Google Sheet y querés un panel para verlos y analizarlos.",
-    "Objetivos: login, KPIs, gráficos, comparación mensual, informe mensual y exportación a PDF.",
-    "Kit de marca: colores y tipografías de ONE / Escencial, para que no salga un diseño genérico.",
-    "Logo (opcional): si va, tiene que ser un LINK DIRECTO a un .png. Si no, escribí \"SIN LOGO\"."
-  ],
-  seccionLabel: "PASO 1 · CONTEXTO, OBJETIVOS Y KIT DE MARCA",
-  bloque: `CONTEXTO:
-Trabajo en el área de Innovación y Desarrollo de Escencial Consultora. Tengo comprobantes (factura, recibo, nota de crédito) cargados en una Google Sheet. Necesito un PANEL DE ADMINISTRACIÓN, en un solo archivo HTML, que LEA todos esos comprobantes y me los muestre como tablero para analizar el gasto y armar informes. No carga datos nuevos: solo lee y muestra.
-
-OBJETIVOS:
+const OBJETIVOS_KIT = `OBJETIVOS:
 - Un solo archivo HTML autocontenido, que funcione al doble clic.
 - Que LEA los datos desde mi Google Sheets usando el doGet (un fetch GET al Web App que devuelve un JSON con todos los registros).
 - Pantalla de login con usuario y contraseña antes de mostrar nada.
@@ -474,7 +460,46 @@ KIT DE MARCA (ONE / Escencial):
 --color-gris-claro: #c6c9d7
 Tipografía: títulos "Exo 2" (Google Fonts), números en "Space Mono". Fondos crema/blanco, texto negro, acentos fucsia + cian con sutileza.
 
-LOGO: { PEGÁ ACÁ EL LINK DIRECTO A TU LOGO EN .PNG, O ESCRIBÍ "SIN LOGO" }`
+LOGO: { PEGÁ ACÁ EL LINK DIRECTO A TU LOGO EN .PNG, O ESCRIBÍ "SIN LOGO" }`;
+
+/* Paso 1 — método "sumar el doGet": ya existe un HTML de carga, no se toca */
+const S_CONTEXTO_SUMAR = {
+  icono: "message-circle",
+  titulo: "Contexto, objetivos y kit de marca",
+  resumen: "La base del prompt: qué panel querés, con qué funciones y con qué estilo visual.",
+  detalle: [
+    "Contexto: tenés comprobantes en una Google Sheet y querés un panel para verlos y analizarlos.",
+    "No se toca la carga que ya funciona: la pantalla inicial sigue siendo esa, con un botón nuevo para entrar al panel.",
+    "Objetivos: login, KPIs, gráficos, comparación mensual, informe mensual y exportación a PDF.",
+    "Kit de marca: colores y tipografías de ONE / Escencial, para que no salga un diseño genérico.",
+    "Logo (opcional): si va, tiene que ser un LINK DIRECTO a un .png. Si no, escribí \"SIN LOGO\"."
+  ],
+  seccionLabel: "PASO 1 · CONTEXTO, OBJETIVOS Y KIT DE MARCA",
+  bloque: `CONTEXTO:
+Trabajo en el área de Innovación y Desarrollo de Escencial Consultora. Ya tengo un archivo HTML que carga comprobantes (factura, recibo, nota de crédito) a una Google Sheet, y es la pantalla inicial de mi proyecto. Quiero SUMARLE un PANEL DE ADMINISTRACIÓN que LEA esos comprobantes y los muestre como tablero para analizar el gasto y armar informes.
+
+MUY IMPORTANTE — NO TOQUES LA CARGA EXISTENTE:
+La pantalla inicial que se abre tiene que seguir siendo el HTML de carga que ya tengo, funcionando exactamente igual que antes: no lo elimines ni lo reescribas. Sumale nada más un botón visible (ej. "Acceder al panel de administración") que abra el panel nuevo armado con las instrucciones de abajo, como una pantalla o sección aparte.
+
+${OBJETIVOS_KIT}`
+};
+
+/* Paso 1 — método "todo junto": arranca de cero, un solo archivo nuevo */
+const S_CONTEXTO_COMPLETO = {
+  icono: "message-circle",
+  titulo: "Contexto, objetivos y kit de marca",
+  resumen: "La base del prompt: qué panel querés, con qué funciones y con qué estilo visual.",
+  detalle: [
+    "Contexto: tenés comprobantes en una Google Sheet y querés un panel para verlos y analizarlos.",
+    "Objetivos: login, KPIs, gráficos, comparación mensual, informe mensual y exportación a PDF.",
+    "Kit de marca: colores y tipografías de ONE / Escencial, para que no salga un diseño genérico.",
+    "Logo (opcional): si va, tiene que ser un LINK DIRECTO a un .png. Si no, escribí \"SIN LOGO\"."
+  ],
+  seccionLabel: "PASO 1 · CONTEXTO, OBJETIVOS Y KIT DE MARCA",
+  bloque: `CONTEXTO:
+Trabajo en el área de Innovación y Desarrollo de Escencial Consultora. Tengo comprobantes (factura, recibo, nota de crédito) cargados en una Google Sheet. Necesito un PANEL DE ADMINISTRACIÓN, en un solo archivo HTML, que LEA todos esos comprobantes y me los muestre como tablero para analizar el gasto y armar informes. No carga datos nuevos: solo lee y muestra.
+
+${OBJETIVOS_KIT}`
 };
 
 const S_LOCALSTORAGE = {
@@ -548,11 +573,13 @@ const S_PDF = {
 - El archivo se descarga como informe-comprobantes-AAAA-MM.pdf.`
 };
 
-/* Bloque de prompt sobre cómo lee los datos (va en el paso de Apps Script de ambos métodos) */
+/* Bloque de prompt sobre cómo lee los datos (método "todo junto": acá se arma doPost + doGet desde cero) */
 const BLOQUE_DOGET = `CÓMO LEE LOS DATOS (doGet):
 El panel trae los datos con un fetch GET a la URL del Web App, agregándole ?hoja=NOMBRE_DE_LA_PESTAÑA al final. El doGet devuelve un JSON que es una LISTA de objetos, uno por comprobante, donde las claves son EXACTAMENTE los encabezados de mi Google Sheets:
 "Fecha", "Sector", "Proveedor", "Tipo de comprobante", "N° Comprobante", "Concepto", "Monto", "Método de pago", "Observaciones".
-IMPORTANTE al leer: "Monto" puede venir como número, y "Fecha" como texto dd/mm/aaaa o como fecha ISO. Parsealos de forma robusta antes de sumar, ordenar o agrupar por mes.`;
+IMPORTANTE al leer: "Monto" puede venir como número, y "Fecha" como texto dd/mm/aaaa o como fecha ISO. Parsealos de forma robusta antes de sumar, ordenar o agrupar por mes.
+
+Recordá enviar los datos mediante JSON para evitar el error de CORS.`;
 
 const BLOQUE_LINK = `DATOS DE MI GOOGLE SHEETS Y WEB APP:
 Nombre exacto de la pestaña: { PONÉ ACÁ EL NOMBRE EXACTO DE TU PESTAÑA, EJ: "Hoja 1" }
@@ -587,8 +614,8 @@ const S_DOGET_SOLO = {
     { titulo: "El editor con doPost arriba y doGet pegado abajo", archivo: "assets/capturas/doget-codigo.png" },
     { titulo: "Guardá y ejecutá una vez para autorizar el acceso", archivo: "assets/capturas/doget-guardar-ejecutar.jpg" }
   ],
-  seccionLabel: "PASO 2 · CÓMO LEE LOS DATOS (doGet)",
-  bloque: BLOQUE_DOGET
+  seccionLabel: "PASO 2 · CÓDIGO DEL APP SCRIPT (doPost + doGet)",
+  bloque: `{ PEGÁ ACÁ EL CÓDIGO COMPLETO DE TU APP SCRIPT (doPost + doGet) }`
 };
 
 const S_REDEPLOY = {
@@ -673,14 +700,14 @@ const METODOS = {
     tabIcono: "git-merge",
     tabTitulo: "① Sumar el doGet a mi proyecto",
     intro: "Ya tenés tu formulario de carga andando (doPost). Este método SOLO agrega la lectura: pegás el doGet en el mismo Apps Script, publicás una versión nueva y armás el panel. No rehacés nada de lo que ya funciona.",
-    pasos: [ S_CONTEXTO, S_DOGET_SOLO, S_REDEPLOY, S_LOCALSTORAGE, S_LOGIN, S_PDF ]
+    pasos: [ S_CONTEXTO_SUMAR, S_DOGET_SOLO, S_REDEPLOY, S_LOCALSTORAGE, S_LOGIN, S_PDF ]
   },
   completo: {
     nombre: "Todo junto",
     tabIcono: "package",
     tabTitulo: "② Todo junto (doPost + doGet)",
     intro: "Método directo, sin anclarse a nada previo: pegás el backend completo (doPost + doGet) de una sola vez, publicás y armás el panel. Ideal si arrancás de cero o querés todo el proceso en una sola pasada.",
-    pasos: [ S_CONTEXTO, S_BACKEND, S_PUBLICAR, S_LOCALSTORAGE, S_LOGIN, S_PDF ]
+    pasos: [ S_CONTEXTO_COMPLETO, S_BACKEND, S_PUBLICAR, S_LOCALSTORAGE, S_LOGIN, S_PDF ]
   }
 };
 
